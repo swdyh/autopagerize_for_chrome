@@ -19,7 +19,7 @@ def open_chrome():
     os.spawnl(os.P_NOWAIT, path, opts[0], opts[1])
 
 
-crx = "apfc.crx"
+crx = "autopagerize_for_chrome.crx"
 id = "38c37d51986565d5334e62eb0d056c10a68d69c7"
 package_extension("src", crx)
 remove_extension(id)

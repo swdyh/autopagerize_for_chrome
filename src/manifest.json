@@ -12,7 +12,7 @@
   ], 
   "description": "loading next page and inserting into current page.", 
   "id": "38C37D51986565D5334E62EB0D056C10A68D69C7", 
-  "name": "AutoPagerize Chrome", 
+  "name": "AutoPagerize for Chrome", 
   "permissions": [
     "http://wedata.net/*"
   ], 
