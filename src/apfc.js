@@ -1,6 +1,6 @@
 // based on autopagerize.user.js 0.0.37
 // FIXME
-var URL = 'http://relucks.org/'
+var URL = 'http://github.com/swdyh/autopagerize_for_chrome/tree/master'
 var VERSION = '0.0.1'
 var DEBUG = false
 var AUTO_START = true
