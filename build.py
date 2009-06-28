@@ -1,30 +1,33 @@
 import os
 import time
-import shutil
-import chromium_extension
+from subprocess import Popen,PIPE
 
-def remove_extension(id):
-    path = "C:\Documents and Settings\Administrator\Local Settings\Application Data\Google\Chrome\User Data\Default\Extensions\\" + id
-    if os.access(path, os.F_OK):
-        shutil.rmtree(path)
+chrome = "C:\\Documents and Settings\\Administrator\\Local Settings\\Application Data\\Google\\Chrome\\Application\\chrome.exe"
 
-def package_extension(indir, outfile):
-    ext = chromium_extension.ExtensionDir(indir)
-    ext.writeToPackage(outfile)
-    pkg = chromium_extension.ExtensionPackage(outfile)
+def package_extension(src, key):
+    opt1 ='--pack-extension=' + src
+    opt2 ='--pack-extension-key=' + key
+    proc = Popen([chrome, opt1, opt2], stdout=PIPE, stderr=PIPE)
+    # print proc.communicate()[0]
+    # stdout, stderr = proc.communicate()
 
 def open_chrome():
-    path = "C:\Documents and Settings\Administrator\Local Settings\Application Data\Google\Chrome\Application\chrome.exe"
     opts = ["--enable-user-scripts", "--enable-extensions"]
-    os.spawnl(os.P_NOWAIT, path, opts[0], opts[1])
+    os.spawnl(os.P_NOWAIT, chrome, opts[0], opts[1])
 
+def rm(path):
+    if os.path.isfile(path):
+        os.remove(path)
 
 crx = "autopagerize_for_chrome.crx"
-id = "38c37d51986565d5334e62eb0d056c10a68d69c7"
-package_extension("src", crx)
-remove_extension(id)
+src ='\\\\.host\\Shared Folders\\youhei_mac\\dev\\js\\chrome\\autopagerize_for_chrome\\src'
+key ='\\\\.host\\Shared Folders\\youhei_mac\\dev\\js\\chrome\\autopagerize_for_chrome\\autopagerize_for_chrome.pem'
+rm(crx)
+package_extension(src, key)
+time.sleep(2)
+os.rename('src.crx', crx)
 open_chrome()
 time.sleep(2)
 os.startfile(crx)
-print "ok"
+print 'ok'
 
