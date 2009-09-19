@@ -9,7 +9,6 @@ AutoPagerize: <http://github.com/swdyh/autopagerize/tree/master>
 
 ## Install
 
-download autopagerize_for_chrome.crx <br />
-<http://github.com/swdyh/autopagerize_for_chrome/downloads>
-
+Install Chrome Extension here.<br />
+<http://autopagerize.net/>
 
