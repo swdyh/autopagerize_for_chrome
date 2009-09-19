@@ -4,13 +4,14 @@ window.onload = init
 
 function init() {
     chrome.extension.onConnect.addListener(function(port, name) {
-        console.assert(name == 'siteinfoChannel')
-        port.onMessage.addListener(function(message, con) {
-            var res = siteinfo.filter(function(s) {
-                return message.url.match(s.url)
+        if (name == "siteinfoChannel") {
+            port.onMessage.addListener(function(message, con) {
+                var res = siteinfo.filter(function(s) {
+                    return message.url.match(s.url)
+                })
+                con.postMessage(res)
             })
-            con.postMessage(res)
-        })
+        }
     })
 
     urls.forEach(function(url) {

@@ -792,7 +792,7 @@ function launchAutoPager(list) {
 }
 
 var ap = null
-var port = chrome.extension.connect({name: 'siteinfoChannel'})
+var port = chrome.extension.connect({name: "siteinfoChannel"})
 port.postMessage({ url: location.href })
 port.onMessage.addListener(function(res) {
     launchAutoPager(res)
