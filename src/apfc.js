@@ -754,7 +754,7 @@ if (typeof(window.AutoPagerize) == 'undefined') {
 //         launchAutoPager(cacheInfo[i].info)
 //     }
 // })
-// launchAutoPager([MICROFORMAT])
+launchAutoPager([MICROFORMAT])
 // return
 
 
