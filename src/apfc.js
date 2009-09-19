@@ -792,14 +792,11 @@ function launchAutoPager(list) {
 }
 
 var ap = null
-var con = chrome.extension.connect()
-con.onMessage.addListener(function(res){
-    launchAutoPager(res[1])
+var port = chrome.extension.connect({name: 'siteinfoChannel'})
+port.postMessage({ url: location.href })
+port.onMessage.addListener(function(res) {
+    launchAutoPager(res)
 })
-con.postMessage(['get_siteinfo', { url: location.href }])
-
-
-
 
 // utility functions.
 function createHTMLDocumentByString(str) {

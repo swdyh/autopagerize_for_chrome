@@ -16,8 +16,6 @@
   "permissions": [
     "http://wedata.net/*"
   ], 
-  "toolstrips": [
-    "toolchip.html"
-  ], 
+  "background_page": "background.html",
   "version": "0.0.2"
 }
