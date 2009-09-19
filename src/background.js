@@ -3,8 +3,8 @@ var urls = ['http://wedata.net/databases/AutoPagerize/items.json']
 window.onload = init
 
 function init() {
-    chrome.extension.onConnect.addListener(function(port, name) {
-        if (name == "siteinfoChannel") {
+    chrome.extension.onConnect.addListener(function(port) {
+        if (port.name == "siteinfoChannel") {
             port.onMessage.addListener(function(message, con) {
                 var res = siteinfo.filter(function(s) {
                     return message.url.match(s.url)
