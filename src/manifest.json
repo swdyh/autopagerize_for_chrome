@@ -18,5 +18,5 @@
   ], 
   "background_page": "background.html",
   "update_url": "http://autopagerize.net/files/updates.xml",
-  "version": "0.0.3"
+  "version": "0.0.4"
 }
