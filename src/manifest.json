@@ -2,7 +2,7 @@
   "content_scripts": [
     {
       "js": [
-        "apfc.js"
+        "autopagerize.user.js"
       ], 
       "matches": [
         "http://*/*", 
