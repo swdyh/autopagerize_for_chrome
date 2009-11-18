@@ -7,7 +7,8 @@
       "matches": [
         "http://*/*", 
         "https://*/*"
-      ]
+      ],
+      "run_at": "document_end"
     }
   ], 
   "description": "loading next page and inserting into current page.", 
