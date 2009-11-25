@@ -11,7 +11,7 @@
       "run_at": "document_end"
     }
   ], 
-  "description": "loading next page and inserting into current page.", 
+  "description": "A browser Extension for auto loading paginated web pages. AutoPagerize use in many web site, and provide efficiently web browsing.", 
   "id": "38C37D51986565D5334E62EB0D056C10A68D69C7", 
   "name": "AutoPagerize for Chrome", 
   "permissions": [
