@@ -1,0 +1,63 @@
+<html>
+<body>
+<h1>Settings</h1>
+<style>
+body {
+  padding: 0 20px;
+}
+p {
+  margin: 0;
+  font-size: 80%;
+}
+code {
+  background-color: #ddd;
+}
+</style>
+<script type="text/javascript">
+function get(key) {
+//    var prefix = 'extensions.autopagerize@relucks.org.'
+//    return Application.prefs.getValue(prefix + key, null)
+    return localStorage[key]
+}
+function set(key, val) {
+//    var prefix = 'extensions.autopagerize@relucks.org.'
+//    Application.prefs.setValue(prefix + key, val)
+//    return val
+    localStorage[key] = val
+    return val
+}
+
+function init() {
+  var settings = get()
+  var form = document.getElementById('settings_form')
+  var form_ep = document.getElementById('form_ep')
+  form_ep.value = get('exclude_patterns') || ''
+  form.addEventListener('submit', function() {
+    set('exclude_patterns', form_ep.value)
+  }, false)
+}
+
+window.addEventListener('load', init, false)
+
+</script>
+
+<div>
+<form id="settings_form">
+<div><label for="form_ep">Exclude Patterns</label></div>
+<div>
+<textarea id="form_ep" cols="60" rows="7"></textarea>
+</div>
+<p>
+example(wildcard): <code> http://www.example.com/search?*</code> <br />
+example(regexp): <code>/[^.]+\.example\.com\//</code>
+</p>
+
+<input type="submit" value="Save" />
+</form>
+
+</div>
+
+</body>
+</html>
+
+
