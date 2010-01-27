@@ -23,6 +23,12 @@
 if (isChromeExtension()) {
     chromeCompatible()
 }
+else {
+    var ep = getPref('exclude_patterns')
+    if (ep && isExclude(ep)) {
+        return
+    }
+}
 
 var URL = 'http://autopagerize.net/'
 var VERSION = '0.0.42'
@@ -782,15 +788,23 @@ if (typeof(window.AutoPagerize) == 'undefined') {
 
 
 var ap = null
-launchAutoPager(SITEINFO)
 if (isChromeExtension()) {
-    var port = chrome.extension.connect({name: "siteinfoChannel"})
-    port.postMessage({ url: location.href })
+    var port = chrome.extension.connect({name: "settingsChannel"})
+    port.postMessage()
     port.onMessage.addListener(function(res) {
-        launchAutoPager(res)
+        if (res['exclude_patterns'] && isExclude(res['exclude_patterns'])) {
+            return
+        }
+        launchAutoPager(SITEINFO)
+        var port_ = chrome.extension.connect({name: "siteinfoChannel"})
+        port_.postMessage({ url: location.href })
+        port_.onMessage.addListener(function(res) {
+            launchAutoPager(res)
+        })
     })
 }
 else {
+    launchAutoPager(SITEINFO)
     GM_registerMenuCommand('AutoPagerize - clear cache', clearCache)
     var cacheInfo = getCache()
     var xhrStates = {}
@@ -1033,6 +1047,28 @@ function strip_html_tag(str) {
 function getPref(key, defaultValue) {
     var value = GM_getValue(key)
     return (typeof value == 'undefined') ? defaultValue : value
+}
+
+function wildcard2regep(str) {
+    return '^' + str.replace(/([-()\[\]{}+?.$\^|,:#<!\\])/g, '\\$1').replace(/\x08/g, '\\x08').replace(/\*/g, '.*')
+}
+
+function isExclude(patterns) {
+    var rr = /^\/(.+)\/$/
+    var eps = (patterns || '').split(/[\r\n]/)
+    for (var i = 0; i < eps.length; i++) {
+        var reg = null
+        if (rr.test(eps[i])) {
+            reg = eps[i].match(rr)[1]
+        }
+        else {
+            reg = wildcard2regep(eps[i])
+        }
+        if (location.href.match(reg)) {
+            return true
+        }
+    }
+    return false
 }
 
 function isFirefoxExtension() {
