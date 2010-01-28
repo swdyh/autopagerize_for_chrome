@@ -19,7 +19,6 @@
   ], 
   "background_page": "background.html",
   "options_page": "options.html",
-  "update_url": "http://autopagerize.net/files/updates.xml",
   "version": "0.0.5",
   "icons": {
      "16":  "icons/icon16.png",
