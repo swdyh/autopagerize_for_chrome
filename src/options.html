@@ -1,13 +1,14 @@
 <html>
 <body>
-<h1>Settings</h1>
+<h1 class="settings">Settings</h1>
 <style>
 body {
   padding: 0 20px;
+  font-family: sans-serif;
 }
-p {
-  margin: 0;
-  font-size: 80%;
+.desc {
+  margin: 3px 0 10px 7px;
+  font-size: 90%;
 }
 code {
   background-color: #ddd;
@@ -28,6 +29,12 @@ function set(key, val) {
 }
 
 function init() {
+  var ls = ['settings', 'exclude_patterns', 'example',
+            'regexp', 'wildcard', 'save']
+  ls.forEach(function(i) {
+    setLocale(i)
+  })
+
   var settings = get()
   var form = document.getElementById('settings_form')
   var form_ep = document.getElementById('form_ep')
@@ -37,27 +44,42 @@ function init() {
   }, false)
 }
 
+function setLocale(name) {
+  var m = chrome.i18n.getMessage(name)
+  if (m) {
+    var es = document.querySelectorAll('.' + name)
+    Array.prototype.slice.call(es).forEach(function(i) {
+      if (i.nodeName == 'INPUT' && i.type == 'submit') {
+        i.value = m
+      }
+      else {
+        i.innerHTML = m
+      }
+    })
+  }
+}
+
 window.addEventListener('load', init, false)
 
 </script>
 
 <div>
 <form id="settings_form">
-<div><label for="form_ep">Exclude Patterns</label></div>
+<div><label for="form_ep" class="exclude_patterns">Exclude Patterns</label></div>
 <div>
 <textarea id="form_ep" cols="60" rows="7"></textarea>
 </div>
-<p>
-example(wildcard): <code> http://www.example.com/search?*</code> <br />
-example(regexp): <code>/[^.]+\.example\.com\//</code>
-</p>
 
-<input type="submit" value="Save" />
+<div class="desc">
+<span class="example">Example</span>(<span class="wildcard">wildcard</span>): <code> http://www.example.com/search?*</code>
+ <br />
+<span class="example">Example</span>(<span class="regexp">regexp</span>): <code>/[^.]+\.example\.com\//</code>
+</div>
+
+<input class="save" type="submit" value="Save" />
 </form>
 
 </div>
 
 </body>
 </html>
-
-

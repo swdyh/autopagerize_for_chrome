@@ -1,0 +1,27 @@
+{
+  "description": {
+    "message": "ページごとに分けられたWebページを自動で読み込み継ぎ足し表示を行うブラウザ拡張です。 AutoPagerizeは様々なWebサイトで利用でき、効率的なWebブラウジングを提供します。"
+  },
+  "settings" : {
+    "message": "設定"
+  },
+  "exclude_patterns" : {
+    "message": "除外パターン"
+  },
+  "example" : {
+    "message": "例"
+
+  },
+  "regexp" : {
+    "message": "正規表現"
+  },
+  "wildcard" : {
+    "message": "ワイルドカード"
+  },
+  "save" : {
+    "message": "保存"
+  },
+  "dummy" : {
+    "message": ""
+  }
+}
