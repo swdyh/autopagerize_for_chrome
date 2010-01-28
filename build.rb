@@ -3,11 +3,20 @@
 require 'rubygems'
 require 'crxmake'
 
-CrxMake.make(
+CrxMake.zip(
   :ex_dir => "./src",
   :pkey   => "./autopagerize_for_chrome.pem",
-  :crx_output => "./autopagerize_for_chrome.crx",
+  :zip_output => "./autopagerize_for_chrome.zip",
   :verbose => true,
   :ignorefile => /\.swp/,
   :ignoredir => /\.(?:svn|git|cvs)/
 )
+
+# CrxMake.make(
+#   :ex_dir => "./src",
+#   :pkey   => "./autopagerize_for_chrome.pem",
+#   :crx_output => "./autopagerize_for_chrome.crx",
+#   :verbose => true,
+#   :ignorefile => /\.swp/,
+#   :ignoredir => /\.(?:svn|git|cvs)/
+# )
