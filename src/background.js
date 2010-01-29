@@ -13,7 +13,6 @@ function init() {
             })
         }
         if (port.name == "settingsChannel") {
-console.log('receive settingChannel')
             port.onMessage.addListener(function(message, con) {
                 var res = {}
                 var keys = ['exclude_patterns']
@@ -21,6 +20,14 @@ console.log('receive settingChannel')
                     res[keys[i]] = localStorage[keys[i]]
                 }
                 con.postMessage(res)
+            })
+        }
+        if (port.name == "pageActionChannel") {
+            port.onMessage.addListener(function(message, con) {
+                var tabid = con.tab.id
+                var path = 'icons/' + message.replace('#', '') + '.png'
+                chrome.pageAction.show(tabid)
+                chrome.pageAction.setIcon({tabId:tabid, path: path})
             })
         }
     })

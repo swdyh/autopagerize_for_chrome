@@ -118,6 +118,8 @@ var AutoPager = function(info) {
         document.body.appendChild(div)
         this.icon = div
     }
+    else if (isChromeExtension()) {
+    }
     else {
         this.initIcon()
         this.initHelp()
@@ -246,9 +248,14 @@ AutoPager.prototype.updateIcon = function(state) {
     }
     var color = COLOR[st]
     if (color) {
-        this.icon.style.background = color
         if (isFirefoxExtension()) {
             chlorine.statusBar.update(color, location.href)
+        }
+        else if (isChromeExtension()) {
+            chrome.extension.connect({name: "pageActionChannel"}).postMessage(color)
+        }
+        else {
+            this.icon.style.background = color
         }
     }
 }

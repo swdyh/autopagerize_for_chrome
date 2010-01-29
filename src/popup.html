@@ -1,0 +1,61 @@
+<html>
+<head>
+<script type="text/javascript" src="locale.js"></script>
+<script>
+function toggle() {
+    var code = "var ev = document.createEvent('Event');" +
+        "ev.initEvent('AutoPagerizeToggleRequest', true, false);" +
+        "document.dispatchEvent(ev);"
+    chrome.tabs.getSelected(null, function(tab) {
+        chrome.tabs.executeScript(tab.id, {code: code})
+    })
+}
+function init() {
+    var ls = ['options']
+    ls.forEach(function(i) {
+        setLocale(i)
+    })
+}
+window.addEventListener('load', init, false)
+</script>
+<style>
+#popup {
+  font-family: sans-serif;
+  font-size: 70%;
+}
+p {
+  margin: 4px 0;
+  width: 7em;
+}
+.icon {
+  vertical-align: middle;
+}
+.icon_desc {
+  margin-top: 10px;
+}
+</style>
+</head>
+<body>
+<div id="popup">
+<p>
+<a href="void(0)" onclick="toggle()">On/Off</a>
+</p>
+<p>
+<a class="options" href="void(0)" onclick="window.open('options.html')">Options</a>
+</p>
+<p>
+<a href="void(0)" onclick="window.open('http://autopagerize.net/')">Go to website</a>
+</p>
+
+<p class="icon_desc">
+Status<br />
+<img class="icon" src="icons/0f0.png" /> On<br />
+<img class="icon" src="icons/ccc.png" /> Off<br />
+<img class="icon" src="icons/0ff.png" /> Loading<br />
+<img class="icon" src="icons/00f.png" /> Terminated<br />
+<img class="icon" src="icons/f0f.png" /> Error<br />
+</p>
+
+</div>
+</body>
+</html>

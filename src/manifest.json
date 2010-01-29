@@ -15,7 +15,9 @@
   "id": "38C37D51986565D5334E62EB0D056C10A68D69C7", 
   "name": "AutoPagerize for Chrome", 
   "permissions": [
-    "http://wedata.net/*"
+    "http://*/*",
+    "https://*/*",
+    "tabs"
   ], 
   "background_page": "background.html",
   "options_page": "options.html",
@@ -25,6 +27,11 @@
      "32":  "icons/icon32.png",
      "48":  "icons/icon48.png",
      "128": "icons/icon128.png"
+  },
+  "page_action": {
+    "default_title": "Autopagerize Status",
+    "popup": "popup.html",
+    "default_icon": "0f0.png"
   },
   "default_locale": "en"
 }
