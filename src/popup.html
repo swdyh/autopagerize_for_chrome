@@ -3,11 +3,8 @@
 <script type="text/javascript" src="locale.js"></script>
 <script>
 function toggle() {
-    var code = "var ev = document.createEvent('Event');" +
-        "ev.initEvent('AutoPagerizeToggleRequest', true, false);" +
-        "document.dispatchEvent(ev);"
     chrome.tabs.getSelected(null, function(tab) {
-        chrome.tabs.executeScript(tab.id, {code: code})
+        chrome.tabs.connect(tab.id, {name: "toggleRequestChannel"}).postMessage()
     })
 }
 function init() {

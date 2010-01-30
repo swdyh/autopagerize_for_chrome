@@ -15,8 +15,7 @@
   "id": "38C37D51986565D5334E62EB0D056C10A68D69C7", 
   "name": "AutoPagerize for Chrome", 
   "permissions": [
-    "http://*/*",
-    "https://*/*",
+    "http://wedata.net/*",
     "tabs"
   ], 
   "background_page": "background.html",

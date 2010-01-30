@@ -807,6 +807,15 @@ if (isChromeExtension()) {
         port_.postMessage({ url: location.href })
         port_.onMessage.addListener(function(res) {
             launchAutoPager(res)
+            chrome.extension.onConnect.addListener(function(port) {
+                if (port.name == "toggleRequestChannel") {
+                    port.onMessage.addListener(function(msg) {
+                        if (ap) {
+                            ap.toggle();
+                        }
+                    })
+                }
+            })
         })
     })
 }
