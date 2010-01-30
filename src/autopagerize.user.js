@@ -249,7 +249,7 @@ AutoPager.prototype.updateIcon = function(state) {
     var color = COLOR[st]
     if (color) {
         if (isFirefoxExtension()) {
-            chlorine.statusBar.update(color, location.href)
+            chlorine.pageAction.update(color, location.href)
         }
         else if (isChromeExtension()) {
             chrome.extension.connect({name: "pageActionChannel"}).postMessage(color)
