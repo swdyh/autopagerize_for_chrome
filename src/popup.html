@@ -5,7 +5,16 @@
 function toggle() {
     chrome.tabs.getSelected(null, function(tab) {
         chrome.tabs.connect(tab.id, {name: "toggleRequestChannel"}).postMessage()
+        window.close()
     })
+}
+function openOptionsPage() {
+    window.close()
+    window.open('options.html')
+}
+function openWebsite() {
+    window.close()
+    window.open('http://autopagerize.net/')
 }
 function init() {
     setLocalesAll()
@@ -35,8 +44,8 @@ p {
 <span class="h">AutoPagerize</span></br>
 <p>
   <a href="void(0)" onclick="toggle()" class="i18n">on_off</a><br />
-  <a class="i18n" href="void(0)" onclick="window.open('options.html')">options</a><br />
-  <a href="void(0)" onclick="window.open('http://autopagerize.net/')" class="i18n">go_to_web</a>
+  <a class="i18n" href="void(0)" onclick="openOptionsPage()">options</a><br />
+  <a href="void(0)" onclick="openWebsite()" class="i18n">go_to_web</a>
 </p>
 
 <span class="i18n h">status</span><br />
