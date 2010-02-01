@@ -20,6 +20,30 @@
   "save" : {
     "message": "Save"
   },
+  "status" : {
+    "message": "Status"
+  },
+  "on_off" : {
+    "message": "On/Off"
+  },
+  "go_to_web" : {
+    "message": "Go to website"
+  },
+  "on" : {
+    "message": "On"
+  },
+  "off" : {
+    "message": "Off"
+  },
+  "loading" : {
+    "message": "Loading"
+  },
+  "terminated" : {
+    "message": "All page loaded"
+  },
+  "error" : {
+    "message": "Error"
+  },
   "a" : {
     "message": ""
   },

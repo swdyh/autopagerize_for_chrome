@@ -23,40 +23,36 @@ function set(key, val) {
     return val
 }
 function init() {
-  var ls = ['options', 'exclude_patterns', 'example',
-            'regexp', 'wildcard', 'save']
-  ls.forEach(function(i) {
-    setLocale(i)
-  })
+    setLocalesAll()
 
-  var settings = get()
-  var form = document.getElementById('settings_form')
-  var form_ep = document.getElementById('form_ep')
-  form_ep.value = get('exclude_patterns') || ''
-  form.addEventListener('submit', function() {
-    set('exclude_patterns', form_ep.value)
-  }, false)
+    var settings = get()
+    var form = document.getElementById('settings_form')
+    var form_ep = document.getElementById('form_ep')
+    form_ep.value = get('exclude_patterns') || ''
+    form.addEventListener('submit', function() {
+        set('exclude_patterns', form_ep.value)
+    }, false)
 }
 window.addEventListener('load', init, false)
 </script>
 </head>
 
 <body>
-<h1 class="options">Options</h1>
+<h1 class="i18n">options</h1>
 <div>
 <form id="settings_form">
-<div><label for="form_ep" class="exclude_patterns">Exclude Patterns</label></div>
+<div><label for="form_ep" class="i18n">exclude_patterns</label></div>
 <div>
 <textarea id="form_ep" cols="60" rows="7"></textarea>
 </div>
 
 <div class="desc">
-<span class="example">Example</span>(<span class="wildcard">wildcard</span>): <code> http://www.example.com/search?*</code>
+<span class="i18n">example</span>(<span class="i18n">wildcard</span>): <code> http://www.example.com/search?*</code>
  <br />
-<span class="example">Example</span>(<span class="regexp">regexp</span>): <code>/[^.]+\.example\.com\//</code>
+<span class="i18n">example</span>(<span class="i18n">regexp</span>): <code>/[^.]+\.example\.com\//</code>
 </div>
 
-<input class="save" type="submit" value="Save" />
+<input class="i18n" type="submit" value="save" />
 </form>
 
 </div>

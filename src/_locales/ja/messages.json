@@ -20,6 +20,30 @@
   "save" : {
     "message": "保存"
   },
+  "status" : {
+    "message": "ステータス"
+  },
+  "on_off" : {
+    "message": "オン/オフ"
+  },
+  "go_to_web" : {
+    "message": "Webサイトへ"
+  },
+  "on" : {
+    "message": "オン"
+  },
+  "off" : {
+    "message": "オフ"
+  },
+  "loading" : {
+    "message": "ロード中"
+  },
+  "terminated" : {
+    "message": "全ページ読み込み完了"
+  },
+  "error" : {
+    "message": "エラー"
+  },
   "dummy" : {
     "message": ""
   }

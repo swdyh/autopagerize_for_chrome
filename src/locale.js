@@ -1,14 +1,27 @@
-function setLocale(name) {
-  var m = chrome.i18n.getMessage(name)
-  if (m) {
-    var es = document.querySelectorAll('.' + name)
+function setLocalesAll() {
+    var es = document.querySelectorAll('.i18n')
     Array.prototype.slice.call(es).forEach(function(i) {
-      if (i.nodeName == 'INPUT' && i.type == 'submit') {
-        i.value = m
-      }
-      else {
-        i.innerHTML = m
-      }
+        setLocales(i)
     })
-  }
 }
+
+function setLocales(node) {
+    var name = null
+    if (node.nodeName == 'INPUT' && node.type == 'submit') {
+        name = node.value
+    }
+    else {
+        name = node.innerHTML
+    }
+    var message = chrome.i18n.getMessage(name)
+    if (message) {
+        if (node.nodeName == 'INPUT' && node.type == 'submit') {
+            node.value = message
+        }
+        else {
+            //node.innerText = message
+            node.innerHTML = message
+        }
+    }
+}
+
