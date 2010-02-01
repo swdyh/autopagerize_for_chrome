@@ -448,12 +448,13 @@ AutoPager.prototype.canHandleCrossDomainRequest = function() {
 }
 
 AutoPager.prototype.terminate = function() {
-    this.updateIcon('terminated')
     window.removeEventListener('scroll', this.scroll, false)
+    this.updateIcon('terminated')
     var self = this
     setTimeout(function() {
-        self.updateIcon('disable')
-        self.icon.parentNode.removeChild(self.icon)
+        if (self.icon) {
+            self.icon.parentNode.removeChild(self.icon)
+        }
     }, 1500)
 }
 
