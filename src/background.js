@@ -12,7 +12,7 @@ function init() {
                 con.postMessage(res)
             })
         }
-        if (port.name == "settingsChannel") {
+        else if (port.name == "settingsChannel") {
             port.onMessage.addListener(function(message, con) {
                 var res = {}
                 var keys = ['exclude_patterns']
@@ -22,7 +22,7 @@ function init() {
                 con.postMessage(res)
             })
         }
-        if (port.name == "pageActionChannel") {
+        else if (port.name == "pageActionChannel") {
             port.onMessage.addListener(function(message, con) {
                 var tabid = con.tab.id
                 var path = 'icons/' + message.replace('#', '') + '.png'
