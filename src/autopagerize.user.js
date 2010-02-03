@@ -1021,12 +1021,13 @@ function supportsFinalUrl() {
 }
 
 function resolvePath(path, base) {
-    var XHTML_NS = "http://www.w3.org/1999/xhtml"
-    var XML_NS   = "http://www.w3.org/XML/1998/namespace"
-    var a = document.createElementNS(XHTML_NS, 'a')
-    a.setAttributeNS(XML_NS, 'xml:base', base)
-    a.href = path
-    return a.href
+    if (path.match(/^https?:\/\//)) {
+        return path
+    }
+    if (path.match(/^[^\/]/)) {
+        return base.replace(/[^/]+$/, '') + path
+    }
+    return base + path
 }
 
 function fixResolvePath() {
