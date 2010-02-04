@@ -1029,7 +1029,9 @@ function resolvePath(path, base) {
     if (path.match(/^[^\/]/)) {
         return base.replace(/[^/]+$/, '') + path
     }
-    return base + path
+    else {
+        return base.replace(/([^/]+:\/\/[^/]+)\/.*/, '\$1') + path
+    }
 }
 
 function fixResolvePath() {
