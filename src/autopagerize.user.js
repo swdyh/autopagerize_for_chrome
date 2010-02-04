@@ -281,7 +281,9 @@ AutoPager.prototype.request = function() {
         url: this.requestURL,
         headers: headers,
         overrideMimeType: mime,
-        onerror: this.error,
+        onerror: function(res) {
+            self.error()
+        },
         onload: function(res) {
             self.requestLoad.apply(self, [res])
         }
