@@ -44,8 +44,8 @@
   "error" : {
     "message": "Error"
   },
-  "a" : {
-    "message": ""
+  "display_message_bar" : {
+    "message": "Display Message Bar"
   },
   "dummy" : {
     "message": ""

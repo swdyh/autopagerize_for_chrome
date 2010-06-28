@@ -44,6 +44,9 @@
   "error" : {
     "message": "エラー"
   },
+  "display_message_bar" : {
+    "message": "メッセージバーを表示"
+  },
   "dummy" : {
     "message": ""
   }
