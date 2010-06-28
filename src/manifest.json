@@ -9,6 +9,33 @@
         "https://*/*"
       ],
       "run_at": "document_end"
+    },
+    {
+      "js": [
+        "filter_js/yahoo_jp.user.js"
+      ],
+      "matches": [
+        "http://*.yahoo.co.jp/*"
+      ],
+      "run_at": "document_end"
+    },
+    {
+      "js": [
+        "filter_js/google_image.user.js"
+      ],
+      "matches": [
+        "http://*/images*"
+      ],
+      "run_at": "document_end"
+    },
+    {
+      "js": [
+        "filter_js/twitter.user.js"
+      ],
+      "matches": [
+        "http://twitter.com/*"
+      ],
+      "run_at": "document_end"
     }
   ], 
   "description": "A browser Extension for auto loading paginated web pages. AutoPagerize use in many web site, and provide efficiently web browsing.", 
