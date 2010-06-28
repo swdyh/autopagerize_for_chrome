@@ -6,6 +6,14 @@ var siteinfo = {}
 window.onload = init
 
 function init() {
+    if (!localStorage['settings']) {
+        var defaultSettings = {
+            extension_path: chrome.extension.getURL(''),
+            display_message_bar: true,
+            exclude_patterns: localStorage['exclude_patterns'] || ''
+        }
+        localStorage['settings'] = JSON.stringify(defaultSettings)
+    }
     chrome.extension.onConnect.addListener(function(port) {
         if (port.name == "siteinfoChannel") {
             port.onMessage.addListener(function(message, con) {
@@ -19,13 +27,7 @@ function init() {
         }
         else if (port.name == "settingsChannel") {
             port.onMessage.addListener(function(message, con) {
-                var res = {}
-                var keys = ['exclude_patterns']
-                for (var i = 0; i < keys.length; i++) {
-                    res[keys[i]] = localStorage[keys[i]]
-                }
-                res['extension_path'] = chrome.extension.getURL('')
-                res['display_message_bar'] = false
+                var res = JSON.parse(localStorage['settings'])
                 con.postMessage(res)
             })
         }

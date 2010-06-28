@@ -4,20 +4,38 @@
 body {
   padding: 0 20px;
   font-family: sans-serif;
+  background-color: #eee;
+  color: #444;
 }
 .desc {
   margin: 3px 0 10px 7px;
   font-size: 90%;
 }
 code {
-  background-color: #ddd;
+  background-color: #fffff9;
+}
+textarea {
+  background-color: #fffff9;
+  color: #444;
+}
+.icon {
+  vertical-align: bottom;
+}
+.footer {
+  position: fixed;
+  bottom: 1em;
+  font-size: 80%;
+}
+a, a:visited {
+  color: #333;
+}
+.footer a {
+  font-size: 90%;
 }
 </style>
 <script type="text/javascript" src="locale.js"></script>
 <script type="text/javascript">
-function get(key) {
-    return localStorage[key]
-}
+
 function set(key, val) {
     localStorage[key] = val
     return val
@@ -25,22 +43,33 @@ function set(key, val) {
 function init() {
     setLocalesAll()
 
-    var settings = get()
+    var settings = JSON.parse(localStorage['settings'])
     var form = document.getElementById('settings_form')
     var form_ep = document.getElementById('form_ep')
-    form_ep.value = get('exclude_patterns') || ''
+    var form_dm = document.getElementById('form_dm')
+    form_ep.value = settings['exclude_patterns'] || ''
+    form_dm.checked = settings['display_message_bar'] === false ? false : 'checked'
     form.addEventListener('submit', function() {
-        set('exclude_patterns', form_ep.value)
+        settings['exclude_patterns'] = form_ep.value
+        settings['display_message_bar'] = !!form_dm.checked
+        localStorage['settings'] = JSON.stringify(settings)
     }, false)
 }
 window.addEventListener('load', init, false)
 </script>
 </head>
-
 <body>
-<h1 class="i18n">options</h1>
+<h1><img class="icon" src="icons/icon48.png" /> <span class="i18n">options</span></h1>
 <div>
 <form id="settings_form">
+
+<div>
+  <label for="form_dm" class="i18n">display_message_bar</label>
+  <input type="checkbox" id="form_dm" />
+</div>
+
+<br />
+
 <div><label for="form_ep" class="i18n">exclude_patterns</label></div>
 <div>
 <textarea id="form_ep" cols="60" rows="7"></textarea>
@@ -57,5 +86,9 @@ window.addEventListener('load', init, false)
 
 </div>
 
+<div class="footer">
+AutoPagerize
+<a href="http://autopagerize.net/">http://autopagerize.net/</a>
+</div>
 </body>
 </html>
