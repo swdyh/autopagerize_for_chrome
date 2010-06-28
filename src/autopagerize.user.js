@@ -118,13 +118,11 @@ var AutoPager = function(info) {
         document.body.appendChild(div)
         this.icon = div
     }
-    else if (isChromeExtension()) {
-    }
-    else if (isSafariExtension()) {
+    else if (isChromeExtension() || isSafariExtension()) {
         var frame = document.createElement('iframe')
         frame.style.display = 'none'
         frame.style.position = 'fixed'
-        frame.style.top = window.innerHeight - 25 + 'px'
+        frame.style.bottom = '0px'
         frame.style.left = '0px'
         frame.style.height = '25px'
         frame.style.border = '0px'
@@ -134,7 +132,12 @@ var AutoPager = function(info) {
         frame.scrolling = 'no'
         this.messageFrame = frame
         document.body.appendChild(frame)
-        safari.self.tab.dispatchMessage('launched', {url: location.href })
+        if (isSafariExtension()) {
+            safari.self.tab.dispatchMessage('launched', {url: location.href })
+        }
+        else if (isChromeExtension()) {
+            chrome.extension.connect({name: "launched"}).postMessage()
+        }
     }
     else {
         this.initIcon()
@@ -321,19 +324,17 @@ AutoPager.prototype.request = function() {
 AutoPager.prototype.showLoading = function(sw) {
     if (sw) {
         this.updateIcon('loading')
-        if (isSafariExtension() && settings['display_message_bar']) {
-            this.messageFrame.src = safari.extension.baseURI + 'loading.html'
-            document.documentElement.style.overflowX = 'hidden'
-            this.messageFrame.style.top = window.innerHeight - 25 + 'px'
-            this.messageFrame.style.display = 'block'
+        if (isSafariExtension() || isChromeExtension()) {
+            if (settings['display_message_bar']) {
+                this.messageFrame.src = settings['extension_path'] + 'loading.html'
+                this.messageFrame.style.display = 'block'
+            }
         }
     }
     else {
         this.updateIcon('enable')
-        if (isSafariExtension() && settings['display_message_bar']) {
-            this.messageFrame.src = safari.extension.baseURI + 'loading.html'
+        if (isSafariExtension() || isChromeExtension()) {
             this.messageFrame.style.display = 'none'
-            document.documentElement.style.overflowX = ''
         }
     }
 }
@@ -500,7 +501,6 @@ AutoPager.prototype.terminate = function() {
         if (isSafariExtension()) {
             var mf = self.messageFrame
             mf.parentNode.removeChild(mf)
-            document.documentElement.style.overflowX = ''
         }
     }, 1500)
 }
@@ -508,15 +508,12 @@ AutoPager.prototype.terminate = function() {
 AutoPager.prototype.error = function() {
     this.updateIcon('error')
     window.removeEventListener('scroll', this.scroll, false)
-    if (isSafariExtension()) {
+    if (isSafariExtension() || isChromeExtension()) {
         var mf = this.messageFrame
-        document.documentElement.style.overflowX = 'hidden'
-        mf.style.top = window.innerHeight - 25 + 'px'
-        mf.src = safari.extension.baseURI + 'error.html'
+        mf.src = settings['extension_path'] + 'error.html'
         mf.style = 'block'
         setTimeout(function() {
             mf.parentNode.removeChild(mf)
-            document.documentElement.style.overflowX = ''
         }, 5000)
     }
 }
@@ -858,6 +855,7 @@ if (isChromeExtension()) {
     var port = chrome.extension.connect({name: "settingsChannel"})
     port.postMessage()
     port.onMessage.addListener(function(res) {
+        settings = res
         if (res['exclude_patterns'] && isExclude(res['exclude_patterns'])) {
             return
         }
@@ -884,13 +882,13 @@ else if (isSafariExtension()) {
         safari.self.addEventListener('message', function(event) {
             if (event.name === 'settings') {
                 settings = event.message
-                if (!settings['exclude_patterns'] || !isExclude(settings['exclude_patterns'])) {
-                    safari.self.tab.dispatchMessage('siteinfoChannel', {url: location.href })
-                }
+                safari.self.tab.dispatchMessage('siteinfoChannel', {url: location.href })
             }
             else if (event.name === 'siteinfoChannel') {
-                var res = event.message
-                launchAutoPager(res)
+                if (!settings['exclude_patterns'] || !isExclude(settings['exclude_patterns'])) {
+                    var res = event.message
+                    launchAutoPager(res)
+                }
             }
             else if (event.name === 'toggleRequestChannel') {
                 if (ap) {

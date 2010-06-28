@@ -24,6 +24,8 @@ function init() {
                 for (var i = 0; i < keys.length; i++) {
                     res[keys[i]] = localStorage[keys[i]]
                 }
+                res['extension_path'] = chrome.extension.getURL('')
+                res['display_message_bar'] = false
                 con.postMessage(res)
             })
         }
