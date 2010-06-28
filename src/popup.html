@@ -12,10 +12,6 @@ function openOptionsPage() {
     window.close()
     window.open('options.html')
 }
-function openWebsite() {
-    window.close()
-    window.open('http://autopagerize.net/')
-}
 function init() {
     setLocalesAll()
 }
@@ -26,12 +22,21 @@ body {
   font-family: sans-serif;
   font-size: 80%;
   width: 13em;
+  color: #444;
+}
+a, a:visited {
+  color: #333;
 }
 .h {
   font-weight: bold;
 }
-p {
-  margin: 0 0 10px 5px;
+ul {
+  padding: 0 0 0 5px;
+  margin: 0;
+  list-style: square;
+}
+li {
+  margin: 0 0 0 10px;
 }
 .icon {
   vertical-align: middle;
@@ -40,23 +45,11 @@ p {
 </head>
 <body>
 <div id="popup">
-
 <span class="h">AutoPagerize</span></br>
-<p>
-  <a href="void(0)" onclick="toggle()" class="i18n">on_off</a><br />
-  <a class="i18n" href="void(0)" onclick="openOptionsPage()">options</a><br />
-  <a href="void(0)" onclick="openWebsite()" class="i18n">go_to_web</a>
-</p>
-
-<span class="i18n h">status</span><br />
-<p>
-  <img class="icon" src="icons/0f0.png" /> <span class="i18n">on</span><br />
-  <img class="icon" src="icons/ccc.png" /> <span class="i18n">off</span><br />
-  <img class="icon" src="icons/0ff.png" /> <span class="i18n">loading</span><br />
-  <img class="icon" src="icons/00f.png" /> <span class="i18n">terminated</span><br />
-  <img class="icon" src="icons/f0f.png" /> <span class="i18n">error</span><br />
-</p>
-
+<ul>
+<li><a href="void(0)" onclick="toggle()" class="i18n">on_off</a></li>
+<li><a class="i18n" href="void(0)" onclick="openOptionsPage()">options</a></li>
+</ul>
 </div>
 </body>
 </html>
