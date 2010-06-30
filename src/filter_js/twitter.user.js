@@ -1,9 +1,7 @@
 (function() {
-console.log(1)
     var re = /^http:\/\/twitter\.com\//
-    var re_ex = /^http:\/\/twitter\.com\/([^/]+\/)?(following|followers)/
+    var re_ex = /^http:\/\/twitter\.com\/([^/]+\/)?(following|followers|status)/
     if (re.test(location.href) && !re_ex.test(location.href)) {
-console.log(2)
         AutoPagerize.addRequestFilter(function(opt) {
             var a = document.getElementById('more')
             if (a) {
