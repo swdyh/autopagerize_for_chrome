@@ -12,10 +12,10 @@
     "message": "Example"
   },
   "regexp" : {
-    "message": "regexp"
+    "message": "Regexp"
   },
   "wildcard" : {
-    "message": "reegxp"
+    "message": "Wildcard"
   },
   "save" : {
     "message": "Save"
