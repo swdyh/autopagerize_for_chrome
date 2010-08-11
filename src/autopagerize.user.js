@@ -6,6 +6,8 @@
 // @include        https://*
 // @exclude        https://mail.google.com/*
 // @exclude        http://b.hatena.ne.jp/*
+// @exclude        http://www.facebook.com/plugins/like.php*
+// @exclude        http://api.tweetmeme.com/button.js*
 // ==/UserScript==
 //
 // auther:  swdyh http://d.hatena.ne.jp/swdyh/
@@ -886,6 +888,7 @@ else if (isSafariExtension()) {
             }
             else if (event.name === 'siteinfoChannel') {
                 if (!settings['exclude_patterns'] || !isExclude(settings['exclude_patterns'])) {
+                    launchAutoPager(SITEINFO)
                     var res = event.message
                     launchAutoPager(res)
                 }
