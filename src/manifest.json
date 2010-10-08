@@ -21,15 +21,6 @@
     },
     {
       "js": [
-        "filter_js/google_image.user.js"
-      ],
-      "matches": [
-        "http://*/images*"
-      ],
-      "run_at": "document_end"
-    },
-    {
-      "js": [
         "filter_js/twitter.user.js"
       ],
       "matches": [
