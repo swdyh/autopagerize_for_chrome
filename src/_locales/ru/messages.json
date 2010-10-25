@@ -1,0 +1,53 @@
+{
+  "description": {
+    "message": "Расширение для браузера для авто-загрузки последующих страниц на сайтах которые это поддерживают AutoPagerize поддерживает множество сайтов, повышая эффективность веб серфинга."
+  },
+  "options" : {
+    "message": "Настройки"
+  },
+  "exclude_patterns" : {
+    "message": "Отключить на следующих сайтах"
+  },
+  "example" : {
+    "message": "Пример"
+  },
+  "regexp" : {
+    "message": "Regexp"
+  },
+  "wildcard" : {
+    "message": "Wildcard"
+  },
+  "save" : {
+    "message": "Сохранить"
+  },
+  "status" : {
+    "message": "Status"
+  },
+  "on_off" : {
+    "message": "Вкл./Выкл."
+  },
+  "go_to_web" : {
+    "message": "Перейти на сайт"
+  },
+  "on" : {
+    "message": "Вкл"
+  },
+  "off" : {
+    "message": "Выкл"
+  },
+  "loading" : {
+    "message": "Загрузка"
+  },
+  "terminated" : {
+    "message": "Все страницы загружены"
+  },
+  "error" : {
+    "message": "Ошибка"
+  },
+  "display_message_bar" : {
+    "message": "Отображать информационную панель"
+  },
+  "dummy" : {
+    "message": ""
+  }
+}
