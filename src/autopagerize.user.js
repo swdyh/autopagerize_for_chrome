@@ -191,7 +191,7 @@ AutoPager.prototype.showLoading = function(sw) {
 }
 
 AutoPager.prototype.load = function(htmlDoc, url) {
-    if (!isSameDomain(url)) {
+    if (url && !isSameDomain(url)) {
         this.error()
         return
     }
@@ -633,7 +633,7 @@ function loadWithIframe(url, callback, errback) {
                 errback()
             }
             else {
-                var loadedURL = iframe.contentWindow ? iframe.contentWindow.location.href : url
+                var loadedURL = iframe.contentWindow ? iframe.contentWindow.location.href : null
                 callback(iframe.contentDocument, loadedURL)
             }
             iframe.parentNode.removeChild(iframe)
