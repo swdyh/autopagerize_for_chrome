@@ -15,30 +15,28 @@ function init() {
         localStorage['settings'] = JSON.stringify(defaultSettings)
     }
     chrome.extension.onConnect.addListener(function(port) {
-        if (port.name == "siteinfoChannel") {
-            port.onMessage.addListener(function(message, con) {
+        port.onMessage.addListener(function(message, con) {
+            if (message.name == 'settings') {
+                var res = JSON.parse(localStorage['settings'])
+                con.postMessage({ name: message.name, data: res })
+            }
+            else if (message.name == 'siteinfo') {
                 var res = SITEINFO_IMPORT_URLS.reduce(function(r, url) {
                     return r.concat(siteinfo[url].info)
                 }, []).filter(function(s) {
-                    return message.url.match(s.url)
+                    return message.data.url.match(s.url)
                 })
-                con.postMessage(res)
-            })
-        }
-        else if (port.name == "settingsChannel") {
-            port.onMessage.addListener(function(message, con) {
-                var res = JSON.parse(localStorage['settings'])
-                con.postMessage(res)
-            })
-        }
-        else if (port.name == "pageActionChannel") {
-            port.onMessage.addListener(function(message, con) {
-                var tabid = con.tab.id
-                var path = 'icons/icon16.png'
-                chrome.pageAction.show(tabid)
-                chrome.pageAction.setIcon({tabId:tabid, path: path})
-            })
-        }
+                con.postMessage({ name: message.name, data: res })
+            }
+            else if (message.name == 'launched') {
+                port.onMessage.addListener(function(message, con) {
+                    var tabid = con.tab.id
+                    var path = 'icons/icon16.png'
+                    chrome.pageAction.show(tabid)
+                    chrome.pageAction.setIcon({tabId:tabid, path: path})
+                })
+            }
+        })
     })
 }
 

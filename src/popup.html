@@ -4,7 +4,7 @@
 <script>
 function toggle() {
     chrome.tabs.getSelected(null, function(tab) {
-        chrome.tabs.connect(tab.id, {name: "toggleRequestChannel"}).postMessage()
+        chrome.tabs.connect(tab.id, {name: 'message'}).postMessage({ name: 'toggleRequest' })
         window.close()
     })
 }

@@ -2,29 +2,12 @@
   "content_scripts": [
     {
       "js": [
+        "extension.js",
         "autopagerize.user.js"
       ], 
       "matches": [
         "http://*/*", 
         "https://*/*"
-      ],
-      "run_at": "document_end"
-    },
-    {
-      "js": [
-        "filter_js/yahoo_jp.user.js"
-      ],
-      "matches": [
-        "http://*.yahoo.co.jp/*"
-      ],
-      "run_at": "document_end"
-    },
-    {
-      "js": [
-        "filter_js/twitter.user.js"
-      ],
-      "matches": [
-        "http://twitter.com/*"
       ],
       "run_at": "document_end"
     }
@@ -38,7 +21,7 @@
   ], 
   "background_page": "background.html",
   "options_page": "options.html",
-  "version": "0.1.9",
+  "version": "0.2.1",
   "icons": {
      "16":  "icons/icon16.png",
      "32":  "icons/icon32.png",
