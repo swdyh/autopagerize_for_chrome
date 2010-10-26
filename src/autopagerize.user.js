@@ -284,8 +284,7 @@ AutoPager.prototype.addPage = function(htmlDoc, page) {
 AutoPager.prototype.getNextURL = function(xpath, doc, url) {
     var nextLink = getFirstElementByXPath(xpath, doc)
     if (nextLink) {
-        var nextValue = nextLink.getAttribute('href') ||
-            nextLink.getAttribute('action') || nextLink.value
+        var nextValue = nextLink.toString()
         if (nextValue.match(/^http(s)?:/)) {
             return nextValue
         }
