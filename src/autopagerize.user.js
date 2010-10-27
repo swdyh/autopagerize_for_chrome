@@ -637,6 +637,7 @@ function isExclude(patterns) {
 
 function loadWithIframe(url, callback, errback) {
     var iframe = document.createElement('iframe')
+    iframe.sandbox = 'allow-same-origin'
     iframe.style.display = 'none'
     iframe.src = url
     document.body.appendChild(iframe)
