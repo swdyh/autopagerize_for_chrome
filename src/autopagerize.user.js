@@ -648,6 +648,11 @@ function loadWithIframe(url, callback, errback) {
             }
             else {
                 var loadedURL = iframe.contentWindow ? iframe.contentWindow.location.href : null
+                var doc = iframe.contentDocument
+                var ss =  doc.querySelectorAll('script')
+                for (var i = 0; i < ss.length; i++) {
+                    ss[i].parentNode.removeChild(ss[i])
+                }
                 callback(iframe.contentDocument, loadedURL)
             }
             iframe.parentNode.removeChild(iframe)
