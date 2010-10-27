@@ -170,11 +170,24 @@ AutoPager.prototype.request = function() {
     this.lastRequestURL = this.requestURL
     var self = this
     this.showLoading(true)
-    loadWithIframe(this.requestURL, function(doc, url) {
-        self.load(doc, url)
-    }, function(err) {
-        self.error()
-    })
+
+    if (Extension.isFirefox()) {
+        extension.postMessage('get', { url:  this.requestURL, fromURL: location.href }, function(res) {
+            if (res.responseText && res.finalURL) {
+                self.load(createHTMLDocumentByString(res.responseText), res.finalURL)
+            }
+            else {
+                self.error()
+            }
+        })
+    }
+    else {
+        loadWithIframe(this.requestURL, function(doc, url) {
+            self.load(doc, url)
+        }, function(err) {
+            self.error()
+        })
+    }
 }
 
 AutoPager.prototype.showLoading = function(sw) {
@@ -645,5 +658,39 @@ function loadWithIframe(url, callback, errback) {
     iframe.onload = contentload
     iframe.onerror = errback
 }
+
+function createHTMLDocumentByString(str) {
+    if (document.documentElement.nodeName != 'HTML') {
+        return new DOMParser().parseFromString(str, 'application/xhtml+xml')
+    }
+    var html = strip_html_tag(str)
+    var htmlDoc
+    try {
+        // We have to handle exceptions since Opera 9.6 throws
+        // a NOT_SUPPORTED_ERR exception for |document.cloneNode(false)|
+        // against the DOM 3 Core spec.
+        htmlDoc = document.cloneNode(false)
+        htmlDoc.appendChild(htmlDoc.importNode(document.documentElement, false))
+    }
+    catch(e) {
+        htmlDoc = document.implementation.createDocument(null, 'html', null)
+    }
+    var fragment = createDocumentFragmentByString(html)
+    try {
+        fragment = htmlDoc.adoptNode(fragment)
+    }
+    catch(e) {
+        fragment = htmlDoc.importNode(fragment, true)
+    }
+    htmlDoc.documentElement.appendChild(fragment)
+    return htmlDoc
+}
+
+function createDocumentFragmentByString(str) {
+    var range = document.createRange()
+    range.setStartAfter(document.body)
+    return range.createContextualFragment(str)
+}
+
 
 })()
