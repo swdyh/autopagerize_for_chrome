@@ -172,7 +172,7 @@ AutoPager.prototype.request = function() {
     this.showLoading(true)
 
     if (Extension.isFirefox()) {
-        extension.postMessage('get', { url:  this.requestURL, fromURL: location.href }, function(res) {
+        extension.postMessage('get', { url:  this.requestURL, fromURL: location.href, charset: document.characterSet }, function(res) {
             if (res.responseText && res.finalURL) {
                 self.load(createHTMLDocumentByString(res.responseText), res.finalURL)
             }
