@@ -111,9 +111,10 @@ function AutoPager(info) {
 }
 
 AutoPager.prototype.getPageElementsBottom = function() {
-    try {
-        var elem = getElementsByXPath(this.info.pageElement).pop()
-        return getElementBottom(elem)
+   try {
+        var elems = getElementsByXPath(this.info.pageElement)
+        var bs = elems.map(function(i) { return getElementBottom(i) })
+        return Math.max.apply(Math, bs)
     }
     catch(e) {}
 }
