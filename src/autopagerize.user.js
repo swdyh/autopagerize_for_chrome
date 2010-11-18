@@ -18,6 +18,7 @@
 
 var DEBUG = false
 var BASE_REMAIN_HEIGHT = 400
+var MIN_REQUEST_INTERVAL = 2000
 var FORCE_TARGET_WINDOW = true // FIXME config
 var SITEINFO_IMPORT_URLS = [
     'http://wedata.net/databases/AutoPagerize/items.json',
@@ -110,9 +111,10 @@ function AutoPager(info) {
 }
 
 AutoPager.prototype.getPageElementsBottom = function() {
-    try {
-        var elem = getElementsByXPath(this.info.pageElement).pop()
-        return getElementBottom(elem)
+   try {
+        var elems = getElementsByXPath(this.info.pageElement)
+        var bs = elems.map(function(i) { return getElementBottom(i) })
+        return Math.max.apply(Math, bs)
     }
     catch(e) {}
 }
@@ -167,12 +169,20 @@ AutoPager.prototype.request = function() {
     if (!this.requestURL || this.lastRequestURL == this.requestURL) {
         return
     }
-    this.lastRequestURL = this.requestURL
     var self = this
-    this.showLoading(true)
+    var now = new Date()
+    if (this.reqTime && now - this.reqTime < MIN_REQUEST_INTERVAL) {
+        setTimeout(function() { self.onScroll() }, MIN_REQUEST_INTERVAL)
+        return
+    }
+    else {
+        this.reqTime = now
+    }
 
+    this.lastRequestURL = this.requestURL
+    this.showLoading(true)
     if (Extension.isFirefox()) {
-        extension.postMessage('get', { url:  this.requestURL, fromURL: location.href }, function(res) {
+        extension.postMessage('get', { url:  this.requestURL, fromURL: location.href, charset: document.characterSet }, function(res) {
             if (res.responseText && res.finalURL) {
                 self.load(createHTMLDocumentByString(res.responseText), res.finalURL)
             }
