@@ -122,6 +122,7 @@ AutoPager.prototype.getPageElementsBottom = function() {
 
 AutoPager.prototype.initMessageBar = function() {
     var frame = document.createElement('iframe')
+    frame.id = 'autopagerize_message_bar'
     frame.style.display = 'none'
     frame.style.position = 'fixed'
     frame.style.bottom = '0px'
