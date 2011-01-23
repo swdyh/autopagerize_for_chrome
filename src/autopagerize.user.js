@@ -475,7 +475,7 @@ if (location.href.match('^http://[^.]+\.google\.(?:[^.]{2,3}\.)?[^./]{2,3}/.*(&f
 // utility functions.
 function getElementsByXPath(xpath, node) {
     var nodesSnapshot = getXPathResult(xpath, node,
-        XPathResult.ORDERED_NODE_SNAPSHOT_TYPE)
+        XPathResult.ORDERED_NODE_SNAPSHOT_TYPE || 7)
     var data = []
     for (var i = 0; i < nodesSnapshot.snapshotLength; i++) {
         data.push(nodesSnapshot.snapshotItem(i))
@@ -485,7 +485,7 @@ function getElementsByXPath(xpath, node) {
 
 function getFirstElementByXPath(xpath, node) {
     var result = getXPathResult(xpath, node,
-        XPathResult.FIRST_ORDERED_NODE_TYPE)
+        XPathResult.FIRST_ORDERED_NODE_TYPE || 9)
     return result.singleNodeValue
 }
 
