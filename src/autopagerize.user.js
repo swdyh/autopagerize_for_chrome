@@ -97,6 +97,7 @@ function AutoPager(info) {
         this.getPageElementsBottom() ||
         (Math.round(scrollHeight * 0.8))
     this.remainHeight = scrollHeight - bottom + BASE_REMAIN_HEIGHT
+    this.reqTime = new Date()
     this.onScroll()
 
     var that = this
@@ -412,7 +413,7 @@ var linkFilter = function(doc, url) {
     })
 
     if (!isSameBase) {
-        var images = getElementsByXPath('descendant-or-self::img', doc)
+        var images = getElementsByXPath('descendant-or-self::img[@src]', doc)
         images.forEach(function(i) {
             i.src = resolvePath(i.getAttribute('src'), baseUrl)
         })
