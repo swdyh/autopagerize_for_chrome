@@ -24,7 +24,12 @@ function init() {
                 var res = SITEINFO_IMPORT_URLS.reduce(function(r, url) {
                     return r.concat(siteinfo[url].info)
                 }, []).filter(function(s) {
-                    return message.data.url.match(s.url)
+                    try {
+                        return message.data.url.match(s.url)
+                    }
+                    catch(e) {
+                        // console.log(e);
+                    }
                 })
                 con.postMessage({ name: message.name, data: res })
             }
