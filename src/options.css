@@ -1,0 +1,31 @@
+body {
+  padding: 0 20px;
+  font-family: sans-serif;
+  background-color: #eee;
+  color: #444;
+}
+.desc {
+  margin: 3px 0 10px 7px;
+  font-size: 90%;
+}
+code {
+  background-color: #fffff9;
+}
+textarea {
+  background-color: #fffff9;
+  color: #444;
+}
+.icon {
+  vertical-align: bottom;
+}
+.footer {
+  position: fixed;
+  bottom: 1em;
+  font-size: 80%;
+}
+a, a:visited {
+  color: #333;
+}
+.footer a {
+  font-size: 90%;
+}
