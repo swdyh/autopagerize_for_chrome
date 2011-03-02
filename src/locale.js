@@ -7,7 +7,7 @@ function setLocalesAll() {
 
 function setLocales(node) {
     var name = null
-    if (node.nodeName == 'INPUT' && node.type == 'submit') {
+    if (node.nodeName == 'INPUT' && (node.type == 'submit' || node.type == 'button')) {
         name = node.value
     }
     else {
@@ -15,7 +15,8 @@ function setLocales(node) {
     }
     var message = chrome.i18n.getMessage(name)
     if (message) {
-        if (node.nodeName == 'INPUT' && node.type == 'submit') {
+        if (node.nodeName == 'INPUT' && (node.type == 'submit' || node.type == 'button')) {
+            console.log(node.value)
             node.value = message
         }
         else {

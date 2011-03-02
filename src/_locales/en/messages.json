@@ -47,6 +47,21 @@
   "display_message_bar" : {
     "message": "Display Message Bar"
   },
+  "siteinfo" : {
+    "message": "Siteinfo"
+  },
+  "update_siteinfo" : {
+    "message": "Update Siteinfo"
+  },
+  "updated_at" : {
+    "message": "Updated at"
+  },
+  "size" : {
+    "message": "Size"
+  },
+  "update_siteinfo_complete" : {
+    "message": "Updated."
+  },
   "dummy" : {
     "message": ""
   }

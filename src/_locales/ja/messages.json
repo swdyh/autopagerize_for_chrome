@@ -47,6 +47,21 @@
   "display_message_bar" : {
     "message": "メッセージバーを表示"
   },
+  "siteinfo" : {
+    "message": "サイト情報"
+  },
+  "update_siteinfo" : {
+    "message": "サイト情報を更新する"
+  },
+  "updated_at" : {
+    "message": "更新日時"
+  },
+  "size" : {
+    "message": "登録数"
+  },
+  "update_siteinfo_complete" : {
+    "message": "サイト情報を更新しました"
+  },
   "dummy" : {
     "message": ""
   }
