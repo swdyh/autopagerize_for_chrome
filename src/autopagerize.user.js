@@ -269,6 +269,14 @@ AutoPager.prototype.addPage = function(htmlDoc, page) {
     p.setAttribute('class', 'autopagerize_page_info')
     var self = this
 
+    if (getRoot(this.insertPoint) != document) {
+        var lastPageElement = getElementsByXPath(this.info.pageElement).pop()
+        if (lastPageElement) {
+            this.insertPoint = lastPageElement.nextSibling ||
+                lastPageElement.parentNode.appendChild(document.createTextNode(' '))
+        }
+    }
+
     if (page[0] && page[0].tagName == 'TR') {
         var insertParent = this.insertPoint.parentNode
         var colNodes = getElementsByXPath('child::tr[1]/child::*[self::td or self::th]', insertParent)
@@ -712,5 +720,14 @@ function createDocumentFragmentByString(str) {
     return range.createContextualFragment(str)
 }
 
+function getRoot(element) {
+    var limit = 1000
+    for (var i = 0; i < limit; i++) {
+        if (!element.parentNode) {
+            return element
+        }
+        element = element.parentNode
+    }
+}
 
 })()
