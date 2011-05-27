@@ -5,6 +5,12 @@ var CACHE_EXPIRE = 24 * 60 * 60 * 1000
 var siteinfo = {}
 window.onload = init
 
+var excludes = [
+    'https://mail.google.com/*',
+    'http://b.hatena.ne.jp/*',
+    'http://www.facebook.com/plugins/like.php*',
+    'http://api.tweetmeme.com/button.js*'
+]
 function init() {
     if (!localStorage['settings']) {
         var defaultSettings = {
@@ -18,6 +24,7 @@ function init() {
         port.onMessage.addListener(function(message, con) {
             if (message.name == 'settings') {
                 var res = JSON.parse(localStorage['settings'])
+                res.exclude_patterns += ' ' + excludes.join(' ')
                 con.postMessage({ name: message.name, data: res })
             }
             else if (message.name == 'siteinfo') {
