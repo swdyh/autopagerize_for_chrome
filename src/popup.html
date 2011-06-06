@@ -1,23 +1,9 @@
 <html>
-<head>
-<script type="text/javascript" src="locale.js"></script>
-<script>
-function toggle() {
-    chrome.tabs.getSelected(null, function(tab) {
-        chrome.tabs.connect(tab.id, {name: 'message'}).postMessage({ name: 'toggleRequest' })
-        window.close()
-    })
-}
-function openOptionsPage() {
-    window.close()
-    window.open('options.html')
-}
-function init() {
-    setLocalesAll()
-}
-window.addEventListener('load', init, false)
-</script>
-<style>
+  <head>
+    <script type="text/javascript" src="utils.js"></script>
+    <script type="text/javascript" src="locale.js"></script>
+    <script type="text/javascript" src="popup.js"></script>
+    <style>
 body {
   font-family: sans-serif;
   font-size: 80%;
@@ -25,6 +11,8 @@ body {
   color: #444;
 }
 a, a:visited {
+  cursor: pointer;
+  text-decoration: underline;
   color: #333;
 }
 .h {
@@ -41,15 +29,15 @@ li {
 .icon {
   vertical-align: middle;
 }
-</style>
-</head>
-<body>
-<div id="popup">
-<span class="h">AutoPagerize</span></br>
-<ul>
-<li><a href="void(0)" onclick="toggle()" class="i18n">on_off</a></li>
-<li><a class="i18n" href="void(0)" onclick="openOptionsPage()">options</a></li>
-</ul>
-</div>
-</body>
+    </style>
+  </head>
+  <body>
+    <div id="popup">
+      <span class="h">AutoPagerize</span></br>
+      <ul>
+        <li><a id="toggle" class="i18n">on_off</a></li>
+        <li><a id="open_options_page" class="i18n">options</a></li>
+      </ul>
+    </div>
+  </body>
 </html>
