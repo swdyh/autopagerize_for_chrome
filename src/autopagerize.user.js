@@ -101,6 +101,11 @@ function AutoPager(info) {
         }
     })
     extension.postMessage('launched', {url: location.href })
+    if (Extension.isSafari()) {
+        document.addEventListener('contextmenu', function(event) {
+            safari.self.tab.setContextMenuEventUserInfo(event, 'launched')
+        }, false)
+    }
 
     var scrollHeight = getScrollHeight()
     var bottom = getElementPosition(this.insertPoint).top ||
