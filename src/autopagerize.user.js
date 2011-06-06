@@ -51,7 +51,7 @@ var MICROFORMAT = {
 function AutoPager(info) {
     this.pageNum = 1
     this.info = info
-    this.state = 'enable'
+    this.state = settings.disable ? 'disable' : 'enable'
     var self = this
     var url = this.getNextURL(info.nextLink, document, location.href)
 
