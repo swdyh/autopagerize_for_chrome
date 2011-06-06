@@ -90,6 +90,16 @@ function AutoPager(info) {
             ap.toggle()
         }
     })
+    extension.addListener('enableRequest', function(res) {
+        if (ap) {
+            ap.enable()
+        }
+    })
+    extension.addListener('disableRequest', function(res) {
+        if (ap) {
+            ap.disable()
+        }
+    })
     extension.postMessage('launched', {url: location.href })
 
     var scrollHeight = getScrollHeight()
