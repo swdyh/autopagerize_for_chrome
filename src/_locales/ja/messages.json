@@ -30,10 +30,10 @@
     "message": "Webサイトへ"
   },
   "on" : {
-    "message": "オン"
+    "message": "有効にする"
   },
   "off" : {
-    "message": "オフ"
+    "message": "無効にする"
   },
   "loading" : {
     "message": "ロード中"
