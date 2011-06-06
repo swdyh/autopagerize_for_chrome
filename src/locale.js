@@ -16,7 +16,6 @@ function setLocales(node) {
     var message = chrome.i18n.getMessage(name)
     if (message) {
         if (node.nodeName == 'INPUT' && (node.type == 'submit' || node.type == 'button')) {
-            console.log(node.value)
             node.value = message
         }
         else {
