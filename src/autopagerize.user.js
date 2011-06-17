@@ -119,6 +119,12 @@ function AutoPager(info) {
     document.addEventListener('AutoPagerizeToggleRequest', function() {
         that.toggle()
     }, false)
+    document.addEventListener('AutoPagerizeEnableRequest', function() {
+        that.enable()
+    }, false)
+    document.addEventListener('AutoPagerizeDisableRequest', function() {
+        that.disable()
+    }, false)
     document.addEventListener('AutoPagerizeUpdateSettingsRequest', function() {
         extension.postMessage('settings', {}, function(res) {
             settings = res
