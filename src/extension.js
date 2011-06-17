@@ -26,9 +26,9 @@ function Extension() {
         chrome.extension.onRequest.addListener(callback)
     }
     else if (Extension.isFirefox()) {
-        onMessage = function(res) {
+        self.on('message', function(res) {
             callback({ name: res.name, data: res.data })
-        }
+        })
     }
 }
 Extension.prototype.postMessage = function(name, data, callback) {
@@ -40,7 +40,7 @@ Extension.prototype.postMessage = function(name, data, callback) {
         this.port.postMessage({ name: name, data: data })
     }
     else if (Extension.isFirefox()) {
-        postMessage({ name: name, data: data })
+        self.postMessage({ name: name, data: data })
     }
 }
 Extension.prototype.addListener = function(name, callback) {
