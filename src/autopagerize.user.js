@@ -615,7 +615,7 @@ function resolvePath(path, base) {
         return path
     }
     else if (path.match(/^\?/)) {
-        return base + path
+        return base.replace(/\?.+$/, '') + path
     }
     else if (path.match(/^[^\/]/)) {
         return base.replace(/[^/]+$/, '') + path
