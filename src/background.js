@@ -1,5 +1,5 @@
 var SITEINFO_IMPORT_URLS = [
-    'http://wedata.net/databases/AutoPagerize/items.json',
+    'http://wedata.net/databases/AutoPagerize/items_all.json',
 ]
 var CACHE_EXPIRE = 24 * 60 * 60 * 1000
 var siteinfo = {}
@@ -64,7 +64,8 @@ function init() {
 }
 
 function loadLocalSiteinfoCallback(data) {
-    var url = 'http://wedata.net/databases/AutoPagerize/items.json'
+    var url = 'http://wedata.net/databases/AutoPagerize/items_all.json'
+    var url_old = 'http://wedata.net/databases/AutoPagerize/items.json'
     var cache = JSON.parse(localStorage['cacheInfo'] || '{}')
     if (!cache[url]) {
         siteinfo[url] = {
@@ -77,6 +78,13 @@ function loadLocalSiteinfoCallback(data) {
     }
     else {
         siteinfo[url] = cache[url]
+    }
+
+    // remove old url cache
+    if (cache[url_old]) {
+        delete cache[url_old]
+        localStorage['cacheInfo'] = JSON.stringify(cache)
+        console.log(Object.keys(cache))
     }
     refreshSiteinfo()
 }
