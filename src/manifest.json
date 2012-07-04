@@ -1,27 +1,30 @@
 {
+  "manifest_version": 2,
+  "homepage_url": "http://autopagerize.net/",
   "content_scripts": [
     {
       "js": [
         "extension.js",
         "autopagerize.user.js"
-      ], 
+      ],
       "matches": [
-        "http://*/*", 
+        "http://*/*",
         "https://*/*"
       ],
       "run_at": "document_end"
     }
-  ], 
+  ],
   "description": "A browser Extension for auto loading paginated web pages. AutoPagerize use in many web site, and provide efficiently web browsing.",
-  "id": "38C37D51986565D5334E62EB0D056C10A68D69C7", 
-  "name": "AutoPagerize", 
+  "name": "AutoPagerize",
   "permissions": [
     "http://wedata.net/*",
     "tabs"
-  ], 
-  "background_page": "background.html",
+  ],
+  "background": {
+    "page": "background.html"
+  },
   "options_page": "options.html",
-  "version": "0.3.4",
+  "version": "0.3.5",
   "icons": {
      "16":  "icons/icon16.png",
      "32":  "icons/icon32.png",
@@ -30,8 +33,13 @@
   },
   "page_action": {
     "default_title": "Autopagerize for Chrome",
-    "popup": "popup.html",
+    "default_popup": "popup.html",
     "default_icon": "icons/icon16.png"
   },
-  "default_locale": "en"
+  "default_locale": "en",
+  "web_accessible_resources": [
+    "error.html",
+    "loading.html",
+    "loading.gif"
+  ]
 }
