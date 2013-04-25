@@ -221,7 +221,7 @@ AutoPager.prototype.request = function() {
         })
     }
     else {
-        loadWithIframe(this.requestURL, function(doc, url) {
+        loadWithXHR(this.requestURL, function(doc, url) {
             self.load(doc, url)
         }, function(err) {
             self.error()
@@ -717,6 +717,61 @@ function loadWithIframe(url, callback, errback) {
     }
     iframe.onload = contentload
     iframe.onerror = errback
+}
+
+function loadWithXHR(url, callback, errback) {
+    var req = new XMLHttpRequest();
+    req.open('GET', url, true);
+    req.onreadystatechange = function(e) {
+        if (req.readyState === 4) {
+            if (req.status >= 200 && req.status < 300) {
+                var doc = createHTMLOnChrome(req.responseText);
+                var ss =  doc.querySelectorAll('script');
+                for (var i = 0; i < ss.length; i++) {
+                    ss[i].parentNode.removeChild(ss[i])
+                }
+                callback(doc);
+            }
+            else {
+                errback();
+            }
+        }
+    };
+    req.send();
+}
+// Adopt from Taberareloo
+function createHTMLOnChrome(source) {
+  var doc = document.implementation.createHTMLDocument ?
+    document.implementation.createHTMLDocument('TABERARELOO') :
+    document.implementation.createDocument(null, 'html', null);
+  var range = document.createRange();
+  range.selectNodeContents(doc.documentElement);
+  var fragment = range.createContextualFragment(source);
+  var headChildNames = {
+    title: true,
+    meta: true,
+    link: true,
+    script: true,
+    style: true,
+    /*object: true,*/
+    base: true
+    /*, isindex: true,*/
+  };
+  var child,
+    head = doc.getElementsByTagName('head')[0] || doc.createElement('head'),
+    body = doc.getElementsByTagName('body')[0] || doc.createElement('body');
+  while ((child = fragment.firstChild)) {
+    if (
+      (child.nodeType === doc.ELEMENT_NODE && !(child.nodeName.toLowerCase() in headChildNames)) ||
+      (child.nodeType === doc.TEXT_NODE &&/\S/.test(child.nodeValue))
+    )
+      break;
+    head.appendChild(child);
+  }
+  body.appendChild(fragment);
+  doc.documentElement.appendChild(head);
+  doc.documentElement.appendChild(body);
+  return doc;
 }
 
 function createHTMLDocumentByString(str) {
