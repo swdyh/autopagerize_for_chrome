@@ -221,7 +221,7 @@ AutoPager.prototype.request = function() {
         })
     }
     else {
-        loadWithIframe(this.requestURL, function(doc, url) {
+        loadWithXHR(this.requestURL, function(doc, url) {
             self.load(doc, url)
         }, function(err) {
             self.error()
@@ -717,6 +717,28 @@ function loadWithIframe(url, callback, errback) {
     }
     iframe.onload = contentload
     iframe.onerror = errback
+}
+
+function loadWithXHR(url, callback, errback) {
+    var req = new XMLHttpRequest();
+    req.open('GET', url, true);
+    req.responseType = 'document';
+    req.onreadystatechange = function(e) {
+        if (req.readyState === 4) {
+            if (req.status >= 200 && req.status < 300) {
+                var doc = req.response;
+                var ss  = doc.querySelectorAll('script');
+                for (var i = 0; i < ss.length; i++) {
+                    ss[i].parentNode.removeChild(ss[i])
+                }
+                callback(doc, doc.URL);
+            }
+            else {
+                errback();
+            }
+        }
+    };
+    req.send();
 }
 
 function createHTMLDocumentByString(str) {
