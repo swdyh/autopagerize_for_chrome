@@ -160,3 +160,38 @@ function get(url, callback, opt) {
     return xhr
 }
 
+// Add X-XMLHttpRequest-Final-URL
+var redirects = {}
+chrome.webRequest.onBeforeRedirect.addListener(
+    function (details) {
+        redirects[details.requestId] = details.redirectUrl
+    },
+    { urls: ["<all_urls>"], types: ["xmlhttprequest"] }
+)
+chrome.webRequest.onHeadersReceived.addListener(
+    function(details) {
+        var name = 'X-XMLHttpRequest-Final-URL'
+        var value = (redirects[details.requestId] || details.url)
+        var add = true
+        for (var i = 0; i < details.responseHeaders.length; i++) {
+            if (details.responseHeaders[i].name === name) {
+                details.responseHeaders[i].value = value
+                add = false
+            }
+        }
+        if (add) {
+            details.responseHeaders.push({ name: name, value: value })
+        }
+        return { responseHeaders: details.responseHeaders }
+    },
+    { urls: ["<all_urls>"], types: ["xmlhttprequest"] },
+    ["blocking", "responseHeaders"]
+)
+chrome.webRequest.onCompleted.addListener(
+    function (details) {
+        if (redirects[details.requestId]) {
+            delete redirects[details.requestId]
+        }
+    },
+    { urls: ["<all_urls>"], types: ["xmlhttprequest"] }
+)

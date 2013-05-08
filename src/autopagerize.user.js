@@ -221,7 +221,7 @@ AutoPager.prototype.request = function() {
         })
     }
     else {
-        loadWithIframe(this.requestURL, function(doc, url) {
+        loadWithXHR(this.requestURL, function(doc, url) {
             self.load(doc, url)
         }, function(err) {
             self.error()
@@ -717,6 +717,43 @@ function loadWithIframe(url, callback, errback) {
     }
     iframe.onload = contentload
     iframe.onerror = errback
+}
+
+function loadWithXHR(url, callback, errback) {
+    var xhr = new XMLHttpRequest()
+    xhr.open('GET', url, true)
+    xhr.responseType = 'document'
+    xhr.onload = function(ev) {
+        var doc = xhr.response
+        if (!doc) {
+            return errback('xhrError')
+        }
+         var finalURL = xhr.getResponseHeader('X-XMLHttpRequest-Final-URL')
+        if (!finalURL || !isSameOrigin(url, finalURL)) {
+            return errback('crossOriginAccess')
+        }
+        callback(removeScriptTag(doc), finalURL)
+    }
+    xhr.onerror = function() {
+        errback('xhrError')
+    }
+    xhr.send()
+}
+
+function removeScriptTag(doc) {
+    var ss =  doc.querySelectorAll('script')
+    for (var i = 0; i < ss.length; i++) {
+        ss[i].parentNode.removeChild(ss[i])
+    }
+    return doc
+}
+
+function isSameOrigin(urlA, urlB) {
+    var aa = document.createElement('a')
+    var ab = document.createElement('a')
+    aa.href = urlA
+    ab.href = urlB
+    return aa.protocol === ab.protocol && aa.host === ab.host
 }
 
 function createHTMLDocumentByString(str) {
