@@ -723,16 +723,14 @@ function loadWithXHR(url, callback, errback) {
     var xhr = new XMLHttpRequest()
     xhr.open('GET', url, true)
     xhr.responseType = 'document'
+    // block CORS by chrome.webRequest
+    xhr.setRequestHeader('X-XMLHttpRequest-Block-CORS', location.href)
     xhr.onload = function(ev) {
-        var doc = xhr.response
-        if (!doc) {
+        if (!xhr.response) {
             return errback('xhrError')
         }
-         var finalURL = xhr.getResponseHeader('X-XMLHttpRequest-Final-URL')
-        if (!finalURL || !isSameOrigin(url, finalURL)) {
-            return errback('crossOriginAccess')
-        }
-        callback(removeScriptTag(doc), finalURL)
+        callback(removeScriptTag(xhr.response),
+                 xhr.getResponseHeader('X-XMLHttpRequest-Final-URL'))
     }
     xhr.onerror = function() {
         errback('xhrError')
@@ -746,14 +744,6 @@ function removeScriptTag(doc) {
         ss[i].parentNode.removeChild(ss[i])
     }
     return doc
-}
-
-function isSameOrigin(urlA, urlB) {
-    var aa = document.createElement('a')
-    var ab = document.createElement('a')
-    aa.href = urlA
-    ab.href = urlB
-    return aa.protocol === ab.protocol && aa.host === ab.host
 }
 
 function createHTMLDocumentByString(str) {

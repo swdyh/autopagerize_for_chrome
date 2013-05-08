@@ -160,37 +160,62 @@ function get(url, callback, opt) {
     return xhr
 }
 
-// Add X-XMLHttpRequest-Final-URL
-var redirects = {}
-chrome.webRequest.onBeforeRedirect.addListener(
-    function (details) {
-        redirects[details.requestId] = details.redirectUrl
+
+
+var checkReqs = {}
+var isSameOrigin = function(urlA, urlB) {
+    var aa = document.createElement('a')
+    var ab = document.createElement('a')
+    aa.href = urlA
+    ab.href = urlB
+    return aa.protocol === ab.protocol && aa.host === ab.host
+}
+var addHeader = function(headers, name, value) {
+    var overwite = false
+    for (var i = 0; i < headers.length; i++) {
+        if (headers[i].name.toLowerCase() === name.toLowerCase()) {
+            headers[i].value = value
+            overwite = true
+        }
+    }
+    return overwite ? headers : headers.concat({ name: name, value: value })
+}
+chrome.webRequest.onBeforeSendHeaders.addListener(
+    function(details) {
+        var filtered = details.requestHeaders.filter(function(i) {
+            return (/^X-XMLHttpRequest-Block-CORS$/i).test(i.name)
+        })
+        if (filtered.length != details.requestHeaders.length) {
+            checkReqs[details.requestId] = filtered[0].value
+            return filtered
+        }
     },
-    { urls: ["<all_urls>"], types: ["xmlhttprequest"] }
+    { urls: ["<all_urls>"], types: ["xmlhttprequest"] },
+    ["requestHeaders"]
 )
 chrome.webRequest.onHeadersReceived.addListener(
     function(details) {
-        var name = 'X-XMLHttpRequest-Final-URL'
-        var value = (redirects[details.requestId] || details.url)
-        var add = true
-        for (var i = 0; i < details.responseHeaders.length; i++) {
-            if (details.responseHeaders[i].name === name) {
-                details.responseHeaders[i].value = value
-                add = false
+        if (checkReqs[details.requestId]) {
+            var isRedirect = details.responseHeaders.some(function(i) { return (/location/i).test(i.name) })
+            if (!isRedirect) {
+                var headers = addHeader(details.responseHeaders,
+                                        'X-XMLHttpRequest-Final-URL',
+                                        details.url)
+                return {
+                    cancel: !isSameOrigin(details.url,
+                                          checkReqs[details.requestId]),
+                    responseHeaders: headers
+                }
             }
         }
-        if (add) {
-            details.responseHeaders.push({ name: name, value: value })
-        }
-        return { responseHeaders: details.responseHeaders }
     },
     { urls: ["<all_urls>"], types: ["xmlhttprequest"] },
     ["blocking", "responseHeaders"]
 )
 chrome.webRequest.onCompleted.addListener(
     function (details) {
-        if (redirects[details.requestId]) {
-            delete redirects[details.requestId]
+        if (checkReqs[details.requestId]) {
+            delete checkReqs[details.requestId]
         }
     },
     { urls: ["<all_urls>"], types: ["xmlhttprequest"] }
