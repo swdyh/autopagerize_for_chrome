@@ -182,16 +182,20 @@ var addHeader = function(headers, name, value) {
 }
 chrome.webRequest.onBeforeSendHeaders.addListener(
     function(details) {
-        var filtered = details.requestHeaders.filter(function(i) {
-            return (/^X-XMLHttpRequest-Block-CORS$/i).test(i.name)
-        })
-        if (filtered.length != details.requestHeaders.length) {
-            checkReqs[details.requestId] = filtered[0].value
-            return filtered
+        var xh = 'X-XMLHttpRequest-Block-CORS'
+        var xblock = details.requestHeaders.filter(function(i) {
+            return i.name.toLowerCase() === xh.toLowerCase()
+        })[0]
+        if (xblock) {
+            checkReqs[details.requestId] = xblock.value
+            var hs = details.requestHeaders.filter(function(i) {
+                return !(i.name.toLowerCase() === xh.toLowerCase())
+            })
+            return { requestHeaders: hs }
         }
     },
     { urls: ["<all_urls>"], types: ["xmlhttprequest"] },
-    ["requestHeaders"]
+    ["blocking", "requestHeaders"]
 )
 chrome.webRequest.onHeadersReceived.addListener(
     function(details) {
