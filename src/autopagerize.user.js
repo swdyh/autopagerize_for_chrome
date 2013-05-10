@@ -243,7 +243,7 @@ AutoPager.prototype.showLoading = function(sw) {
 }
 
 AutoPager.prototype.load = function(htmlDoc, url) {
-    if (url && !isSameDomain(url)) {
+    if (!url || !isSameDomain(url)) {
         this.error()
         return
     }
