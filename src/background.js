@@ -160,9 +160,14 @@ function get(url, callback, opt) {
     return xhr
 }
 
-
-
+//  Block XMLHttpRequest CORS
+var xhrHeaderRequest  = 'X-XMLHttpRequest-Block-CORS'
+var xhrHeaderFinalURL = 'X-XMLHttpRequest-Final-URL'
 var checkReqs = {}
+var filter = {
+    urls: ['http://*/*', 'https://*/*'],
+    types: ['xmlhttprequest']
+}
 var isSameOrigin = function(urlA, urlB) {
     var aa = document.createElement('a')
     var ab = document.createElement('a')
@@ -184,7 +189,7 @@ chrome.webRequest.onBeforeSendHeaders.addListener(
     function(details) {
         var xh = 'X-XMLHttpRequest-Block-CORS'
         var xblock = details.requestHeaders.filter(function(i) {
-            return i.name.toLowerCase() === xh.toLowerCase()
+            return i.name.toLowerCase() === xhrHeaderRequest.toLowerCase()
         })[0]
         if (xblock) {
             checkReqs[details.requestId] = xblock.value
@@ -193,34 +198,35 @@ chrome.webRequest.onBeforeSendHeaders.addListener(
             })
             return { requestHeaders: hs }
         }
-    },
-    { urls: ["<all_urls>"], types: ["xmlhttprequest"] },
-    ["blocking", "requestHeaders"]
+    }, filter, ['blocking', 'requestHeaders']
 )
 chrome.webRequest.onHeadersReceived.addListener(
     function(details) {
         if (checkReqs[details.requestId]) {
-            var isRedirect = details.responseHeaders.some(function(i) { return (/location/i).test(i.name) })
+            var isRedirect = details.responseHeaders.some(
+                function(i) {
+                    return i.name.toLowerCase() === 'location'
+                }
+            )
             if (!isRedirect) {
-                var headers = addHeader(details.responseHeaders,
-                                        'X-XMLHttpRequest-Final-URL',
-                                        details.url)
+                var headers = addHeader(
+                    details.responseHeaders,
+                    xhrHeaderFinalURL, details.url
+                )
                 return {
-                    cancel: !isSameOrigin(details.url,
-                                          checkReqs[details.requestId]),
+                    cancel: !isSameOrigin(
+                        details.url, checkReqs[details.requestId]
+                    ),
                     responseHeaders: headers
                 }
             }
         }
-    },
-    { urls: ["<all_urls>"], types: ["xmlhttprequest"] },
-    ["blocking", "responseHeaders"]
+    }, filter, ['blocking', 'responseHeaders']
 )
 chrome.webRequest.onCompleted.addListener(
-    function (details) {
+    function(details) {
         if (checkReqs[details.requestId]) {
             delete checkReqs[details.requestId]
         }
-    },
-    { urls: ["<all_urls>"], types: ["xmlhttprequest"] }
+    }, filter
 )
