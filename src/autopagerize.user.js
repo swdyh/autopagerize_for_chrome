@@ -463,7 +463,22 @@ if (location.href.match('^http://[^.]+\.google\.(?:[^.]{2,3}\.)?[^./]{2,3}/.*(&f
     // console.log([location.href, to])
     location.href = to
 }
-
+// fix youtube thumbnails
+// http://www.youtube.com/results?search_query=a
+if ((/^https?:\/\/www.youtube.com\/results.+/).test(location.href)) {
+    var youtubeSearchShowThumbnalFilter = function(nodes) {
+        nodes.forEach(function(i) {
+            Array.prototype.slice.call(
+                i.querySelectorAll('img[data-thumb]')
+            ).forEach(function(i) {
+                if ((/\.gif$/).test(i.src) && i.dataset.thumb) {
+                    i.src = i.dataset.thumb
+                }
+            })
+        })
+    }
+    AutoPager.filters.push(youtubeSearchShowThumbnalFilter)
+}
 
 // utility functions.
 function getElementsByXPath(xpath, node) {
