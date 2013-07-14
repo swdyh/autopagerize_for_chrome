@@ -83,7 +83,6 @@ function loadLocalSiteinfoCallback(data) {
     if (cache[url_old]) {
         delete cache[url_old]
         localStorage['cacheInfo'] = JSON.stringify(cache)
-        console.log(Object.keys(cache))
     }
     refreshSiteinfo()
 }
@@ -158,4 +157,3 @@ function get(url, callback, opt) {
     xhr.send(null)
     return xhr
 }
-
