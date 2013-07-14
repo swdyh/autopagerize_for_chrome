@@ -41,11 +41,10 @@ function init() {
                 con.postMessage({ name: message.name, data: res })
             }
             else if (message.name == 'launched') {
-                port.onMessage.addListener(function(message, con) {
-                    var tabid = con.sender.tab.id
-                    var path = 'icons/icon16.png'
-                    chrome.pageAction.show(tabid)
-                    chrome.pageAction.setIcon({tabId:tabid, path: path})
+                var tabid = con.sender.tab.id
+                chrome.pageAction.show(tabid)
+                chrome.pageAction.setIcon({
+                    tabId:tabid, path: 'icons/icon16.png'
                 })
             }
             else if (message.name == 'siteinfo_meta') {
