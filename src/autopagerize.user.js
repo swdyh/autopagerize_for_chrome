@@ -247,10 +247,6 @@ AutoPager.prototype.load = function(htmlDoc, url) {
         this.error()
         return
     }
-
-    AutoPager.documentFilters.forEach(function(i) {
-        i(htmlDoc, this.requestURL, this.info)
-    }, this)
     try {
         var page = getElementsByXPath(this.info.pageElement, htmlDoc)
         var url = this.getNextURL(this.info.nextLink, htmlDoc, this.requestURL)
@@ -390,10 +386,7 @@ AutoPager.prototype.error = function() {
         }, 3000)
     }
 }
-
-AutoPager.documentFilters = []
 AutoPager.filters = []
-
 AutoPager.launchAutoPager = function(list) {
     if (list.length == 0) {
         return
@@ -432,35 +425,6 @@ if (window != window.parent) {
     return
 }
 
-var linkFilter = function(doc, url) {
-    var base = getFirstElementByXPath('//base[@href]', doc)
-    var baseUrl = base ? base.href : url
-    var isSameBase = isSameBaseUrl(location.href, baseUrl)
-    if (!FORCE_TARGET_WINDOW && isSameBase) {
-        return
-    }
-
-    var anchors = getElementsByXPath('descendant-or-self::a[@href]', doc)
-    anchors.forEach(function(i) {
-        var attrHref = i.getAttribute('href')
-        if (FORCE_TARGET_WINDOW && !attrHref.match(/^#|^javascript:/) &&
-            i.className.indexOf('autopagerize_link') < 0) {
-            i.target = '_blank'
-        }
-        if (!isSameBase && !attrHref.match(/^#|^\w+:/)) {
-            i.href = resolvePath(i.getAttribute('href'), baseUrl)
-        }
-    })
-
-    if (!isSameBase) {
-        var images = getElementsByXPath('descendant-or-self::img[@src]', doc)
-        images.forEach(function(i) {
-            i.src = resolvePath(i.getAttribute('src'), baseUrl)
-        })
-    }
-}
-AutoPager.documentFilters.push(linkFilter)
-
 if (Extension.isFirefox()) {
     fixResolvePath()
 }
@@ -469,9 +433,6 @@ if (typeof(window.AutoPagerize) == 'undefined') {
     window.AutoPagerize = {}
     window.AutoPagerize.addFilter = function(f) {
         AutoPager.filters.push(f)
-    }
-    window.AutoPagerize.addDocumentFilter = function(f) {
-        AutoPager.documentFilters.push(f)
     }
     window.AutoPagerize.launchAutoPager = AutoPager.launchAutoPager
     var ev = document.createEvent('Event')
