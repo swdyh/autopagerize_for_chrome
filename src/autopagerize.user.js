@@ -323,8 +323,13 @@ AutoPager.prototype.addPage = function(htmlDoc, page) {
         this.insertPoint.parentNode.insertBefore(p, this.insertPoint)
     }
 
-    p.innerHTML = 'page: <a class="autopagerize_link" href="' +
-        this.requestURL.replace(/&/g, '&amp;') + '">' + (++this.pageNum) + '</a>'
+    var aplink = document.createElement('a')
+    aplink.className = 'autopagerize_link'
+    aplink.href = this.requestURL
+    aplink.appendChild(document.createTextNode(String(++this.pageNum)))
+    p.appendChild(document.createTextNode('page: '))
+    p.appendChild(aplink)
+
     return page.map(function(i) {
         var pe = document.importNode(i, true)
         self.insertPoint.parentNode.insertBefore(pe, self.insertPoint)
