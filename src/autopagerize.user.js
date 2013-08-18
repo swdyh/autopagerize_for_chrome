@@ -211,7 +211,7 @@ AutoPager.prototype.request = function() {
     this.lastRequestURL = this.requestURL
     this.showLoading(true)
     if (Extension.isFirefox()) {
-        extension.postMessage('get', { url:  this.requestURL, fromURL: location.href, charset: document.characterSet, cookie: document.cookie }, function(res) {
+        extension.postMessage('get', { url:  this.requestURL, fromURL: location.href, charset: document.characterSet }, function(res) {
             if (res.responseText && res.finalURL) {
                 self.load(createHTMLDocumentByString(res.responseText), res.finalURL)
             }
@@ -426,7 +426,19 @@ AutoPager.launchAutoPager = function(list) {
     }
 }
 
-if (window != window.parent) {
+// firefox about:addon(http://localhost/extensions-dummy/discoveryURL)
+// Error: Permission denied to access property 'href'
+if (Extension.isFirefox()) {
+    try {
+        if (window.location.href != window.parent.location.href) {
+            return
+        }
+    }
+    catch(e) {
+        return
+    }
+}
+else if (window != window.parent) {
     return
 }
 
@@ -548,7 +560,7 @@ function addDefaultPrefix(xpath, prefix) {
 }
 
 function debug() {
-    if ( typeof DEBUG != 'undefined' && DEBUG ) {
+    if (typeof DEBUG != 'undefined' && DEBUG && console.log.apply) {
         console.log.apply(console, arguments)
     }
 }
