@@ -213,11 +213,10 @@ chrome.webRequest.onHeadersReceived.addListener(
                     details.responseHeaders,
                     xhrHeaderFinalURL, details.url
                 )
-                return {
-                    cancel: !isSameOrigin(
-                        details.url, checkReqs[details.requestId]
-                    ),
-                    responseHeaders: headers
+                if (!isSameOrigin(details.url, checkReqs[details.requestId])) {
+                    return { cancel: true }
+                } else {
+                    return { responseHeaders: headers }
                 }
             }
         }
