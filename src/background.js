@@ -160,3 +160,72 @@ function get(url, callback, opt) {
     return xhr
 }
 
+//  Block XMLHttpRequest CORS
+var xhrHeaderRequest  = 'X-XMLHttpRequest-Block-CORS'
+var xhrHeaderFinalURL = 'X-XMLHttpRequest-Final-URL'
+var checkReqs = {}
+var filter = {
+    urls: ['http://*/*', 'https://*/*'],
+    types: ['xmlhttprequest']
+}
+var isSameOrigin = function(urlA, urlB) {
+    var aa = document.createElement('a')
+    var ab = document.createElement('a')
+    aa.href = urlA
+    ab.href = urlB
+    return aa.protocol === ab.protocol && aa.host === ab.host
+}
+var addHeader = function(headers, name, value) {
+    var overwite = false
+    for (var i = 0; i < headers.length; i++) {
+        if (headers[i].name.toLowerCase() === name.toLowerCase()) {
+            headers[i].value = value
+            overwite = true
+        }
+    }
+    return overwite ? headers : headers.concat({ name: name, value: value })
+}
+chrome.webRequest.onBeforeSendHeaders.addListener(
+    function(details) {
+        var xh = 'X-XMLHttpRequest-Block-CORS'
+        var xblock = details.requestHeaders.filter(function(i) {
+            return i.name.toLowerCase() === xhrHeaderRequest.toLowerCase()
+        })[0]
+        if (xblock) {
+            checkReqs[details.requestId] = xblock.value
+            var hs = details.requestHeaders.filter(function(i) {
+                return !(i.name.toLowerCase() === xh.toLowerCase())
+            })
+            return { requestHeaders: hs }
+        }
+    }, filter, ['blocking', 'requestHeaders']
+)
+chrome.webRequest.onHeadersReceived.addListener(
+    function(details) {
+        if (checkReqs[details.requestId]) {
+            var isRedirect = details.responseHeaders.some(
+                function(i) {
+                    return i.name.toLowerCase() === 'location'
+                }
+            )
+            if (!isRedirect) {
+                var headers = addHeader(
+                    details.responseHeaders,
+                    xhrHeaderFinalURL, details.url
+                )
+                if (!isSameOrigin(details.url, checkReqs[details.requestId])) {
+                    return { cancel: true }
+                } else {
+                    return { responseHeaders: headers }
+                }
+            }
+        }
+    }, filter, ['blocking', 'responseHeaders']
+)
+chrome.webRequest.onCompleted.addListener(
+    function(details) {
+        if (checkReqs[details.requestId]) {
+            delete checkReqs[details.requestId]
+        }
+    }, filter
+)

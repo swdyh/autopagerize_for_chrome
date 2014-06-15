@@ -17,8 +17,11 @@
   "description": "A browser Extension for auto loading paginated web pages. AutoPagerize use in many web site, and provide efficiently web browsing.",
   "name": "AutoPagerize",
   "permissions": [
-    "http://wedata.net/*",
-    "tabs"
+    "webRequest",
+    "webRequestBlocking",
+    "tabs",
+    "http://*/*",
+    "https://*/*"
   ],
   "background": {
     "page": "background.html"

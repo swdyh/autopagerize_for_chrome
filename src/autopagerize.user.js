@@ -221,7 +221,7 @@ AutoPager.prototype.request = function() {
         })
     }
     else {
-        loadWithIframe(this.requestURL, function(doc, url) {
+        loadWithXHR(this.requestURL, function(doc, url) {
             self.load(doc, url)
         }, function(err) {
             self.error()
@@ -243,7 +243,7 @@ AutoPager.prototype.showLoading = function(sw) {
 }
 
 AutoPager.prototype.load = function(htmlDoc, url) {
-    if (url && !isSameDomain(url)) {
+    if (!url || !isSameDomain(url)) {
         this.error()
         return
     }
@@ -717,6 +717,33 @@ function loadWithIframe(url, callback, errback) {
     }
     iframe.onload = contentload
     iframe.onerror = errback
+}
+
+function loadWithXHR(url, callback, errback) {
+    var xhr = new XMLHttpRequest()
+    xhr.open('GET', url, true)
+    xhr.responseType = 'document'
+    // block CORS by chrome.webRequest
+    xhr.setRequestHeader('X-XMLHttpRequest-Block-CORS', location.href)
+    xhr.onload = function(ev) {
+        if (!xhr.response) {
+            return errback('xhrError')
+        }
+        callback(removeScriptTag(xhr.response),
+                 xhr.getResponseHeader('X-XMLHttpRequest-Final-URL'))
+    }
+    xhr.onerror = function() {
+        errback('xhrError')
+    }
+    xhr.send()
+}
+
+function removeScriptTag(doc) {
+    var ss =  doc.querySelectorAll('script')
+    for (var i = 0; i < ss.length; i++) {
+        ss[i].parentNode.removeChild(ss[i])
+    }
+    return doc
 }
 
 function createHTMLDocumentByString(str) {
