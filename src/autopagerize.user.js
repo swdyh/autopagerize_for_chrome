@@ -487,9 +487,13 @@ extension.postMessage('settings', {}, function(res) {
     settings = res
     extension.postMessage('siteinfo', { url: location.href }, function(res) {
         if (!settings['exclude_patterns'] || !isExclude(settings['exclude_patterns'])) {
-            AutoPager.launchAutoPager(SITEINFO)
-            AutoPager.launchAutoPager(res)
-            AutoPager.launchAutoPager([MICROFORMAT])
+            var f = function() {
+                AutoPager.launchAutoPager(SITEINFO)
+                AutoPager.launchAutoPager(res)
+                AutoPager.launchAutoPager([MICROFORMAT])
+            }
+            f()
+            !ap && setTimeout(f, 2000)
         }
     })
 })
