@@ -221,7 +221,8 @@ AutoPager.prototype.request = function() {
         })
     }
     else {
-        loadWithIframe(this.requestURL, function(doc, url) {
+        var f = ('responseURL' in new XMLHttpRequest()) ? loadWithXHR : loadWithIframe
+        f(this.requestURL, function(doc, url) {
             self.load(doc, url)
         }, function(err) {
             self.error()
@@ -687,6 +688,17 @@ function isExclude(patterns) {
         }
     }
     return false
+}
+
+function loadWithXHR(url, callback, errback) {
+    var req = new XMLHttpRequest()
+    req.open('GET', url)
+    req.responseType = 'document'
+    req.addEventListener('load', function (event) {
+        callback(event.target.response, event.target.responseURL)
+    })
+    req.addEventListener('error', errback)
+    req.send()
 }
 
 function loadWithIframe(url, callback, errback) {
