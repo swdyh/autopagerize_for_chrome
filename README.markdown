@@ -12,3 +12,5 @@ AutoPagerize: <http://github.com/swdyh/autopagerize/tree/master>
 Install Chrome Extension here.<br />
 <http://autopagerize.net/>
 
+Chrome Web Store
+https://chrome.google.com/webstore/detail/autopagerize/igiofjhpmpihnifddepnpngfjhkfenbp

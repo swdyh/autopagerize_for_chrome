@@ -211,7 +211,7 @@ AutoPager.prototype.request = function() {
     this.lastRequestURL = this.requestURL
     this.showLoading(true)
     if (Extension.isFirefox()) {
-        extension.postMessage('get', { url:  this.requestURL, fromURL: location.href, charset: document.characterSet, cookie: document.cookie }, function(res) {
+        extension.postMessage('get', { url:  this.requestURL, fromURL: location.href, charset: document.characterSet }, function(res) {
             if (res.responseText && res.finalURL) {
                 self.load(createHTMLDocumentByString(res.responseText), res.finalURL)
             }
@@ -248,10 +248,6 @@ AutoPager.prototype.load = function(htmlDoc, url) {
         this.error()
         return
     }
-
-    AutoPager.documentFilters.forEach(function(i) {
-        i(htmlDoc, this.requestURL, this.info)
-    }, this)
     try {
         var page = getElementsByXPath(this.info.pageElement, htmlDoc)
         var url = this.getNextURL(this.info.nextLink, htmlDoc, this.requestURL)
@@ -328,8 +324,13 @@ AutoPager.prototype.addPage = function(htmlDoc, page) {
         this.insertPoint.parentNode.insertBefore(p, this.insertPoint)
     }
 
-    p.innerHTML = 'page: <a class="autopagerize_link" href="' +
-        this.requestURL.replace(/&/g, '&amp;') + '">' + (++this.pageNum) + '</a>'
+    var aplink = document.createElement('a')
+    aplink.className = 'autopagerize_link'
+    aplink.href = this.requestURL
+    aplink.appendChild(document.createTextNode(String(++this.pageNum)))
+    p.appendChild(document.createTextNode('page: '))
+    p.appendChild(aplink)
+
     return page.map(function(i) {
         var pe = document.importNode(i, true)
         self.insertPoint.parentNode.insertBefore(pe, self.insertPoint)
@@ -391,10 +392,7 @@ AutoPager.prototype.error = function() {
         }, 3000)
     }
 }
-
-AutoPager.documentFilters = []
 AutoPager.filters = []
-
 AutoPager.launchAutoPager = function(list) {
     if (list.length == 0) {
         return
@@ -429,38 +427,21 @@ AutoPager.launchAutoPager = function(list) {
     }
 }
 
-if (window != window.parent) {
-    return
-}
-
-var linkFilter = function(doc, url) {
-    var base = getFirstElementByXPath('//base[@href]', doc)
-    var baseUrl = base ? base.href : url
-    var isSameBase = isSameBaseUrl(location.href, baseUrl)
-    if (!FORCE_TARGET_WINDOW && isSameBase) {
+// firefox about:addon(http://localhost/extensions-dummy/discoveryURL)
+// Error: Permission denied to access property 'href'
+if (Extension.isFirefox()) {
+    try {
+        if (window.location.href != window.parent.location.href) {
+            return
+        }
+    }
+    catch(e) {
         return
     }
-
-    var anchors = getElementsByXPath('descendant-or-self::a[@href]', doc)
-    anchors.forEach(function(i) {
-        var attrHref = i.getAttribute('href')
-        if (FORCE_TARGET_WINDOW && !attrHref.match(/^#|^javascript:/) &&
-            i.className.indexOf('autopagerize_link') < 0) {
-            i.target = '_blank'
-        }
-        if (!isSameBase && !attrHref.match(/^#|^\w+:/)) {
-            i.href = resolvePath(i.getAttribute('href'), baseUrl)
-        }
-    })
-
-    if (!isSameBase) {
-        var images = getElementsByXPath('descendant-or-self::img[@src]', doc)
-        images.forEach(function(i) {
-            i.src = resolvePath(i.getAttribute('src'), baseUrl)
-        })
-    }
 }
-AutoPager.documentFilters.push(linkFilter)
+else if (window != window.parent) {
+    return
+}
 
 if (Extension.isFirefox()) {
     fixResolvePath()
@@ -470,9 +451,6 @@ if (typeof(window.AutoPagerize) == 'undefined') {
     window.AutoPagerize = {}
     window.AutoPagerize.addFilter = function(f) {
         AutoPager.filters.push(f)
-    }
-    window.AutoPagerize.addDocumentFilter = function(f) {
-        AutoPager.documentFilters.push(f)
     }
     window.AutoPagerize.launchAutoPager = AutoPager.launchAutoPager
     var ev = document.createEvent('Event')
@@ -507,7 +485,22 @@ if (location.href.match('^http://[^.]+\.google\.(?:[^.]{2,3}\.)?[^./]{2,3}/.*(&f
     // console.log([location.href, to])
     location.href = to
 }
-
+// fix youtube thumbnails
+// http://www.youtube.com/results?search_query=a
+if ((/^https?:\/\/www.youtube.com\/results.+/).test(location.href)) {
+    var youtubeSearchShowThumbnalFilter = function(nodes) {
+        nodes.forEach(function(i) {
+            Array.prototype.slice.call(
+                i.querySelectorAll('img[data-thumb]')
+            ).forEach(function(i) {
+                if ((/\.gif$/).test(i.src) && i.dataset.thumb) {
+                    i.src = i.dataset.thumb
+                }
+            })
+        })
+    }
+    AutoPager.filters.push(youtubeSearchShowThumbnalFilter)
+}
 
 // utility functions.
 function getElementsByXPath(xpath, node) {
@@ -572,7 +565,7 @@ function addDefaultPrefix(xpath, prefix) {
 }
 
 function debug() {
-    if ( typeof DEBUG != 'undefined' && DEBUG ) {
+    if (typeof DEBUG != 'undefined' && DEBUG && console.log.apply) {
         console.log.apply(console, arguments)
     }
 }
