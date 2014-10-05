@@ -692,7 +692,8 @@ function loadWithXHR(url, callback, errback) {
     req.open('GET', url)
     req.responseType = 'document'
     req.addEventListener('load', function (event) {
-        callback(event.target.response, event.target.responseURL)
+        var doc = removeScripts(event.target.response)
+        callback(doc, event.target.responseURL)
     })
     req.addEventListener('error', errback)
     req.send()
@@ -711,12 +712,8 @@ function loadWithIframe(url, callback, errback) {
             }
             else {
                 var loadedURL = iframe.contentWindow ? iframe.contentWindow.location.href : null
-                var doc = iframe.contentDocument
-                var ss =  doc.querySelectorAll('script')
-                for (var i = 0; i < ss.length; i++) {
-                    ss[i].parentNode.removeChild(ss[i])
-                }
-                callback(iframe.contentDocument, loadedURL)
+                var doc = removeScripts(iframe.contentDocument)
+                callback(doc, loadedURL)
             }
             iframe.parentNode.removeChild(iframe)
         }
@@ -726,6 +723,14 @@ function loadWithIframe(url, callback, errback) {
     }
     iframe.onload = contentload
     iframe.onerror = errback
+}
+
+function removeScripts(doc) {
+    var ss =  doc.querySelectorAll('script')
+    for (var i = 0; i < ss.length; i++) {
+        ss[i].parentNode.removeChild(ss[i])
+    }
+    return doc
 }
 
 function createHTMLDocumentByString(str) {
