@@ -3,10 +3,11 @@ body {
   font-family: sans-serif;
   background-color: #eee;
   color: #444;
+  font-size: 12pt;
 }
 .desc {
   margin: 3px 0 10px 7px;
-  font-size: 90%;
+  font-size: 75%;
 }
 code {
   background-color: #fffff9;
@@ -21,11 +22,8 @@ textarea {
 .footer {
   position: fixed;
   bottom: 1em;
-  font-size: 80%;
+  font-size: 70%;
 }
 a, a:visited {
   color: #333;
-}
-.footer a {
-  font-size: 90%;
 }

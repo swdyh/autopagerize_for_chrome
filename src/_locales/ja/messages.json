@@ -8,6 +8,9 @@
   "exclude_patterns" : {
     "message": "除外パターン"
   },
+  "custom_rules" : {
+    "message": "追加の定義"
+  },
   "example" : {
     "message": "例"
   },

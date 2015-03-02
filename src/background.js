@@ -16,6 +16,7 @@ function init() {
         var defaultSettings = {
             extension_path: chrome.extension.getURL(''),
             display_message_bar: true,
+            custom_rules: '',
             exclude_patterns: localStorage['exclude_patterns'] || ''
         }
         localStorage['settings'] = JSON.stringify(defaultSettings)
@@ -28,9 +29,9 @@ function init() {
                 con.postMessage({ name: message.name, data: res })
             }
             else if (message.name == 'siteinfo') {
-                var res = SITEINFO_IMPORT_URLS.reduce(function(r, url) {
+                var res = (siteinfo.local || []).concat(SITEINFO_IMPORT_URLS.reduce(function(r, url) {
                     return r.concat(siteinfo[url].info)
-                }, []).filter(function(s) {
+                }, [])).filter(function(s) {
                     try {
                         return message.data.url.match(s.url)
                     }
@@ -46,6 +47,7 @@ function init() {
                 chrome.pageAction.setIcon({
                     tabId:tabid, path: 'icons/icon16.png'
                 })
+                addLocalSiteinfo();
             }
             else if (message.name == 'siteinfo_meta') {
                 var u = SITEINFO_IMPORT_URLS[0]
@@ -59,6 +61,11 @@ function init() {
                 }})
             }
         })
+        chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+            if (request.name == 'update_customrules') {
+                sendResponse({ error: addLocalSiteinfo()});
+            }
+        })
     })
 }
 
@@ -66,6 +73,7 @@ function loadLocalSiteinfoCallback(data) {
     var url = 'http://wedata.net/databases/AutoPagerize/items_all.json'
     var url_old = 'http://wedata.net/databases/AutoPagerize/items.json'
     var cache = JSON.parse(localStorage['cacheInfo'] || '{}')
+
     if (!cache[url]) {
         siteinfo[url] = {
             url: url,
@@ -113,9 +121,26 @@ function reduceWedataJSON(data) {
     }
 }
 
+function addLocalSiteinfo() {
+    var err;
+    try {
+        var settings = JSON.parse(localStorage['settings']);
+        if (settings.custom_rules) {
+            siteinfo.local = JSON.parse(settings.custom_rules)
+                .filter(function(r) { return r && ('url' in r) });
+        }
+    } catch(e) {
+        var err = e
+    }
+    return err ? ""+err : null;
+}
+
 function refreshSiteinfo(opt) {
     var opt = opt || {}
     var cache = JSON.parse(localStorage['cacheInfo'] || '{}')
+
+    addLocalSiteinfo();
+
     SITEINFO_IMPORT_URLS.forEach(function(url) {
         if (opt.force || !cache[url] || (cache[url].expire && new Date(cache[url].expire) < new Date())) {
             var callback = function(res) {

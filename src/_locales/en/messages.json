@@ -8,6 +8,9 @@
   "exclude_patterns" : {
     "message": "Exclude Patterns"
   },
+  "custom_rules" : {
+    "message": "Custom rules"
+  },
   "example" : {
     "message": "Example"
   },
