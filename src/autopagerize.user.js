@@ -294,11 +294,6 @@ AutoPager.prototype.load = function(htmlDoc, url) {
     var ev = document.createEvent('Event')
     ev.initEvent('GM_AutoPagerizeNextPageLoaded', true, false)
     document.dispatchEvent(ev)
-    if(this.onScroll==null){
-        setTimeout(function(){
-            ap.request()
-        },1500)
-    }
 }
 
 AutoPager.prototype.addPage = function(htmlDoc, page) {
@@ -370,6 +365,9 @@ AutoPager.prototype.addPage = function(htmlDoc, page) {
 AutoPager.prototype.shwoAll= function(){
     AutoPager.prototype.onScroll=null
     this.request()
+    setInterval(function(){
+            ap.request()
+        }, 3000);
 }
 
 AutoPager.prototype.getNextURL = function(xpath, doc, url) {
