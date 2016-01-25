@@ -1,0 +1,68 @@
+{
+  "description": {
+    "message": "Проширење за аутоматско учитавање следеће странице. Ради на многим веб сајтовима и обезбеђује ефикасније прегледање веба."
+  },
+  "options" : {
+    "message": "Опције"
+  },
+  "exclude_patterns" : {
+    "message": "Изузми следеће сајтове:"
+  },
+  "example" : {
+    "message": "Пример"
+  },
+  "regexp" : {
+    "message": "Регуларни израз"
+  },
+  "wildcard" : {
+    "message": "Знак замене"
+  },
+  "save" : {
+    "message": "Сачувај"
+  },
+  "status" : {
+    "message": "Стање"
+  },
+  "on_off" : {
+    "message": "Укљ/Искљ"
+  },
+  "go_to_web" : {
+    "message": "Иди на веб сајт"
+  },
+  "on" : {
+    "message": "Укључи"
+  },
+  "off" : {
+    "message": "Искључи"
+  },
+  "loading" : {
+    "message": "Учитавање"
+  },
+  "terminated" : {
+    "message": "Цела страница је учитана"
+  },
+  "error" : {
+    "message": "Грешка"
+  },
+  "display_message_bar" : {
+    "message": "Прикажи траку информација"
+  },
+  "siteinfo" : {
+    "message": "Информације о сајту"
+  },
+  "update_siteinfo" : {
+    "message": "Ажурирај информације о сајту"
+  },
+  "updated_at" : {
+    "message": "Ажурирано у"
+  },
+  "size" : {
+    "message": "Величина"
+  },
+  "update_siteinfo_complete" : {
+    "message": "Ажурирано."
+  },
+  "dummy" : {
+    "message": ""
+  }
+}
