@@ -15,9 +15,38 @@
         </div>
         <br />
 
+        <div><label for="form_rules" class="i18n">custom_rules</label></div>
+        <div>
+          <textarea id="form_rules" rows="20" style="width:100%">
+[
+{
+    "url": "",
+    "nextLink": "",
+    "pageElement": ""
+}
+]
+          </textarea>
+        </div>
+
+        <div class="desc">
+          <pre>[
+{
+    "url": "^http://some\\.site/path/",
+    "nextLink": "//a[@rel='next']",
+    "pageElement": "id('main')"
+},
+{
+    "url": "^http://some\\.site/path/",
+    "nextLink": "//span[contains(@class,'someclass')]/following-sibling::a[1]",
+    "pageElement": "id('main')",
+    "insertBefore": "id(\"xcolumn1\")//div[@class=\"prevnext\"]"
+}
+]</pre>
+        </div>
+
         <div><label for="form_ep" class="i18n">exclude_patterns</label></div>
         <div>
-          <textarea id="form_ep" cols="60" rows="7"></textarea>
+          <textarea id="form_ep" rows="7" style="width:100%"></textarea>
         </div>
 
         <div class="desc">
