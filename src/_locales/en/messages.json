@@ -8,6 +8,9 @@
   "exclude_patterns" : {
     "message": "Exclude Patterns"
   },
+  "include_patterns" : {
+    "message": "Include Patterns"
+  },
   "example" : {
     "message": "Example"
   },

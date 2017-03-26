@@ -11,12 +11,14 @@ var excludes = [
     'http://www.facebook.com/plugins/like.php*',
     'http://api.tweetmeme.com/button.js*'
 ]
+var includes = []
 function init() {
     if (!localStorage['settings']) {
         var defaultSettings = {
             extension_path: chrome.extension.getURL(''),
             display_message_bar: true,
-            exclude_patterns: localStorage['exclude_patterns'] || ''
+            exclude_patterns: localStorage['exclude_patterns'] || '',
+            include_patterns: localStorage['include_patterns'] || ''
         }
         localStorage['settings'] = JSON.stringify(defaultSettings)
     }
@@ -25,6 +27,7 @@ function init() {
             if (message.name == 'settings') {
                 var res = JSON.parse(localStorage['settings'])
                 res.exclude_patterns += ' ' + excludes.join(' ')
+                res.include_patterns += ' ' + includes.join(' ')
                 con.postMessage({ name: message.name, data: res })
             }
             else if (message.name == 'siteinfo') {

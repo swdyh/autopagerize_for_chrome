@@ -24,7 +24,7 @@
     "page": "background.html"
   },
   "options_page": "options.html",
-  "version": "0.3.9",
+  "version": "0.3.10",
     "icons": {
      "16":  "icons/icon16.png",
      "32":  "icons/icon32.png",
