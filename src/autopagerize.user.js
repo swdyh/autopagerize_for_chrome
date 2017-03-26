@@ -464,7 +464,8 @@ var extension = new Extension()
 extension.postMessage('settings', {}, function(res) {
     settings = res
     extension.postMessage('siteinfo', { url: location.href }, function(res) {
-        if (!settings['exclude_patterns'] || !isExclude(settings['exclude_patterns'])) {
+        if ((settings['include_patterns'] && isExclude(settings['include_patterns']))
+            || (settings['exclude_patterns'] && !isExclude(settings['exclude_patterns']))) {
             var f = function() {
                 AutoPager.launchAutoPager(SITEINFO)
                 AutoPager.launchAutoPager(res)

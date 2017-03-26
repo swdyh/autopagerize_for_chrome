@@ -8,6 +8,9 @@
   "exclude_patterns" : {
     "message": "Отключить на следующих сайтах"
   },
+  "include_patterns" : {
+    "message": "включают"
+  },
   "example" : {
     "message": "Пример"
   },

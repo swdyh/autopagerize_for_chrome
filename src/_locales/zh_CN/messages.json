@@ -1,0 +1,71 @@
+{
+  "description": {
+    "message": "一个自动载入已分页网页的浏览器扩展。AutoPagerize 被用于很多网页，提供高效的网页访问。"
+  },
+  "options" : {
+    "message": "选项"
+  },
+  "exclude_patterns" : {
+    "message": "排除模式"
+  },
+  "include_patterns" : {
+    "message": "包含模式"
+  },
+  "example" : {
+    "message": "例子"
+  },
+  "regexp" : {
+    "message": "正则表达式"
+  },
+  "wildcard" : {
+    "message": "通配符"
+  },
+  "save" : {
+    "message": "保存"
+  },
+  "status" : {
+    "message": "状态"
+  },
+  "on_off" : {
+    "message": "开/关"
+  },
+  "go_to_web" : {
+    "message": "跳转到网页"
+  },
+  "on" : {
+    "message": "开"
+  },
+  "off" : {
+    "message": "关"
+  },
+  "loading" : {
+    "message": "载入中"
+  },
+  "terminated" : {
+    "message": "已加载所有网页"
+  },
+  "error" : {
+    "message": "错误"
+  },
+  "display_message_bar" : {
+    "message": "显示状态栏"
+  },
+  "siteinfo" : {
+    "message": "网页信息"
+  },
+  "update_siteinfo" : {
+    "message": "更新网页信息"
+  },
+  "updated_at" : {
+    "message": "更新于"
+  },
+  "size" : {
+    "message": "Size"
+  },
+  "update_siteinfo_complete" : {
+    "message": "已更新"
+  },
+  "dummy" : {
+    "message": ""
+  }
+}
