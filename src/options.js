@@ -24,7 +24,7 @@ function init() {
 }
 
 function updateCacheInfoInfo() {
-    var port = chrome.extension.connect( { name: 'siteinfo_meta' })
+    var port = chrome.runtime.connect( { name: 'siteinfo_meta' })
     port.onMessage.addListener(function(res) {
         if (res.len) {
             document.getElementById('siteinfo_size').innerHTML = res.len
@@ -38,7 +38,7 @@ function updateCacheInfoInfo() {
 }
 
 function updateCacheInfo() {
-    var port = chrome.extension.connect( { name: 'update_siteinfo' })
+    var port = chrome.runtime.connect( { name: 'update_siteinfo' })
     port.onMessage.addListener(function(res) {
         if (res.res == 'ok') {
             updateCacheInfoInfo()

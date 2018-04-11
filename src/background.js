@@ -20,7 +20,7 @@ function init() {
         }
         localStorage['settings'] = JSON.stringify(defaultSettings)
     }
-    chrome.extension.onConnect.addListener(function(port) {
+    chrome.runtime.onConnect.addListener(function(port) {
         port.onMessage.addListener(function(message, con) {
             if (message.name == 'settings') {
                 var res = JSON.parse(localStorage['settings'])

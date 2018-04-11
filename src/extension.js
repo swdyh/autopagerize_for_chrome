@@ -16,14 +16,14 @@ function Extension() {
         })
     }
     else if (Extension.isChrome()) {
-        this.port = chrome.extension.connect({ name: 'message' })
+        this.port = chrome.runtime.connect({ name: 'message' })
         this.port.onMessage.addListener(callback)
-        chrome.extension.onConnect.addListener(function(port) {
+        chrome.runtime.onConnect.addListener(function(port) {
             if (port.name == 'message') {
                 port.onMessage.addListener(callback)
             }
         })
-        chrome.extension.onRequest.addListener(callback)
+        chrome.runtime.onMessage.addListener(callback)
     }
     else if (Extension.isFirefox()) {
         self.on('message', function(res) {

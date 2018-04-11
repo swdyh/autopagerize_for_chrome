@@ -3,7 +3,7 @@ function dispatchMessageAll(message, obj, urlpattern) {
         ws.forEach(function(w) {
             w.tabs.forEach(function(t) {
                 if (!urlpattern || urlpattern.match(t.url)) {
-                    chrome.tabs.sendRequest(t.id, { name: message, data: obj })
+                    chrome.tabs.sendMessage(t.id, { name: message, data: obj })
                 }
             })
         })
