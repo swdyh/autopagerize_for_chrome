@@ -1,0 +1,15 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    crxmake (2.2.0)
+      rubyzip (~> 1.1.0)
+    rubyzip (1.1.7)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  crxmake
+
+BUNDLED WITH
+   1.16.1
