@@ -59,6 +59,16 @@ function init() {
                 }})
             }
         })
+
+        // popup|options -> bg -> content
+        chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+            if (request.name == 'disable_from_popup') {
+                port.postMessage({ name: request.data })
+            }
+            else if (request.name == 'update_setting_from_options') {
+                port.postMessage({ name: 'updateSettings', data: request.data })
+            }
+        })
     })
 }
 

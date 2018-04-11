@@ -15,7 +15,7 @@ function init() {
         settings['exclude_patterns'] = form_ep.value
         settings['display_message_bar'] = !!form_dm.checked
         localStorage['settings'] = JSON.stringify(settings)
-        dispatchMessageAll('updateSettings', settings)
+        chrome.runtime.sendMessage({ name: 'update_setting_from_options', data: settings })
     }, false)
     updateCacheInfoInfo()
 

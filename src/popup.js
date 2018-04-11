@@ -1,6 +1,6 @@
 function toggle() {
     var settings = JSON.parse(localStorage['settings'])
-    dispatchMessageAll(settings.disable ? 'enableRequest' : 'disableRequest')
+    chrome.runtime.sendMessage({ name: 'disable_from_popup', data: settings.disable ? 'enableRequest' : 'disableRequest' })
     settings.disable = !settings.disable
     localStorage['settings'] = JSON.stringify(settings)
     window.close()
