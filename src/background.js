@@ -148,7 +148,7 @@ function refreshSiteinfo(opt) {
                 }
             }
             try {
-                get(url, callback)
+                get(`${url}?ts=${Date.now}`, callback)
             }
             catch(e) {
             }
