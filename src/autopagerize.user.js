@@ -81,7 +81,10 @@ function AutoPager(info) {
     this.loadedURLs[location.href] = true
     var toggle = function() { self.stateToggle() }
     this.toggle = toggle
-    this.scroll= function() { self.onScroll() }
+    this.scroll= function() {
+        if(self.onScroll!=null)
+            self.onScroll()
+    }
     window.addEventListener("scroll", this.scroll, false)
 
     this.initMessageBar()
@@ -113,7 +116,8 @@ function AutoPager(info) {
         (Math.round(scrollHeight * 0.8))
     this.remainHeight = scrollHeight - bottom + BASE_REMAIN_HEIGHT
     this.reqTime = new Date()
-    this.onScroll()
+    if(this.onScroll!=null)
+        this.onScroll()
 
     var that = this
     document.addEventListener('AutoPagerizeToggleRequest', function() {
@@ -177,6 +181,8 @@ AutoPager.prototype.onScroll = function() {
     }
 }
 
+
+
 AutoPager.prototype.stateToggle = function() {
     if (this.state == 'enable') {
         this.disable()
@@ -201,7 +207,10 @@ AutoPager.prototype.request = function() {
     var self = this
     var now = new Date()
     if (this.reqTime && now - this.reqTime < MIN_REQUEST_INTERVAL) {
-        setTimeout(function() { self.onScroll() }, MIN_REQUEST_INTERVAL)
+        setTimeout(function() { 
+            if(self.onScroll!=null)
+                self.onScroll() 
+            }, MIN_REQUEST_INTERVAL)
         return
     }
     else {
@@ -264,7 +273,8 @@ AutoPager.prototype.load = function(htmlDoc, url) {
     })
     this.requestURL = url
     this.showLoading(false)
-    this.onScroll()
+    if(this.onScroll!=null)
+        this.onScroll()
     if (!url) {
         debug('nextLink not found.', this.info.nextLink, htmlDoc)
         this.terminate()
@@ -302,6 +312,7 @@ AutoPager.prototype.addPage = function(htmlDoc, page) {
         var td = document.createElement('td')
         // td.appendChild(hr)
         td.appendChild(p)
+
         var tr = document.createElement('tr')
         td.setAttribute('colspan', colums)
         tr.appendChild(td)
@@ -319,6 +330,14 @@ AutoPager.prototype.addPage = function(htmlDoc, page) {
     p.appendChild(document.createTextNode('page: '))
     p.appendChild(aplink)
 
+    var load = document.createElement('input')
+    load.setAttribute('type','button')
+    load.style.float= 'right'
+    load.value = 'Load All'
+    load.addEventListener('click', function(){ap.shwoAll()})
+    load.appendChild(document.createTextNode('All'))
+    p.appendChild(load)
+
     return page.map(function(i) {
         var pe = document.importNode(i, true)
         self.insertPoint.parentNode.insertBefore(pe, self.insertPoint)
@@ -329,6 +348,14 @@ AutoPager.prototype.addPage = function(htmlDoc, page) {
         pe.dispatchEvent(ev)
         return pe
     })
+}
+
+AutoPager.prototype.shwoAll= function(){
+    AutoPager.prototype.onScroll=null
+    this.request()
+    setInterval(function(){
+            ap.request()
+        }, 3000);
 }
 
 AutoPager.prototype.getNextURL = function(xpath, doc, url) {
