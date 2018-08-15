@@ -1,0 +1,68 @@
+{
+  "description": {
+    "message": "这是一个自动读取且继续添加显示分页化网页的浏览器扩展。AutoPagerize可用于各类网站，提供高效的网页浏览。"
+  },
+  "options" : {
+    "message": "选项"
+  },
+  "exclude_patterns" : {
+    "message": "除外样式"
+  },
+  "example" : {
+    "message": "例子"
+  },
+  "regexp" : {
+    "message": "正则表达式"
+  },
+  "wildcard" : {
+    "message": "通配符"
+  },
+  "save" : {
+    "message": "保存"
+  },
+  "status" : {
+    "message": "状态"
+  },
+  "on_off" : {
+    "message": "启用/禁用"
+  },
+  "go_to_web" : {
+    "message": "转至网站"
+  },
+  "on" : {
+    "message": "启用"
+  },
+  "off" : {
+    "message": "禁用"
+  },
+  "loading" : {
+    "message": "加载中"
+  },
+  "terminated" : {
+    "message": "所有页面已加载"
+  },
+  "error" : {
+    "message": "错误"
+  },
+  "display_message_bar" : {
+    "message": "显示信息条"
+  },
+  "siteinfo" : {
+    "message": "站点信息"
+  },
+  "update_siteinfo" : {
+    "message": "更新站点信息"
+  },
+  "updated_at" : {
+    "message": "更新于"
+  },
+  "size" : {
+    "message": "数目"
+  },
+  "update_siteinfo_complete" : {
+    "message": "已更新。"
+  },
+  "dummy" : {
+    "message": ""
+  }
+}
